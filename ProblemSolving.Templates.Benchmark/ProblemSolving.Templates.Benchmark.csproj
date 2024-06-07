@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" Version="0.13.12" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ProblemSolving.Templates\ProblemSolving.Templates.csproj" />
   </ItemGroup>
 
