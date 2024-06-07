@@ -3,9 +3,9 @@
 namespace ProblemSolving.Templates.SegmentTree
 {
     [IncludeIfReferenced]
-    public sealed class MaxSegV2 : GenericSeg<long, long>
+    public sealed class MaxSeg : GenericSeg<long, long>
     {
-        public MaxSegV2(int size)
+        public MaxSeg(int size)
             : base(size)
         {
         }

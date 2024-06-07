@@ -61,7 +61,7 @@ namespace ProblemSolving.Templates.Benchmark.Benchmarks
         public List<long> GenericMaxSeg()
         {
             var result = new List<long>();
-            var seg = new MaxSegV2(SegTreeSize);
+            var seg = new MaxSeg(SegTreeSize);
             seg.Init(_initialValues);
 
             foreach (var (type, arg0, arg1) in _queries)
