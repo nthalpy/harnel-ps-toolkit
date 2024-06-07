@@ -7,7 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Program.Standalone.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Program.Standalone.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ProblemSolving.Templates\ProblemSolving.Templates.csproj" />
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="dotnet $(MSBuildProjectDirectory)\$(OutputPath)ProblemSolving.Templates.Merger.dll --DllPath $(MSBuildProjectDirectory)\$(OutputPath)ProblemSolving.dll --EntrypointPath $(MSBuildProjectDirectory)\Program.cs --StandalonePath $(MSBuildProjectDirectory)\Program.Standalone.cs" />
+  </Target>
+  
 </Project>

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ProblemSolving.Templates.Merger": {
+      "commandName": "Project",
+      "commandLineArgs": "--DllPath C:\\Users\\dcrgk\\Desktop\\ProblemSolving\\ProblemSolving\\bin\\Debug\\net6.0\\ProblemSolving.dll --EntrypointPath C:\\Users\\dcrgk\\Desktop\\ProblemSolving\\ProblemSolving\\Program.cs --StandalonePath C:\\Users\\dcrgk\\Desktop\\ProblemSolving\\ProblemSolvingProgram.Standalone.cs"
+    }
+  }
+}
