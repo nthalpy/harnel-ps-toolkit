@@ -1,10 +1,45 @@
-﻿using ProblemSolving.Templates.SegmentTree;
+﻿using ProblemSolving.Templates.Splay;
 using ProblemSolving.Templates.Utility;
 using System;
 using System.IO;
 using System.Linq;
 
 #nullable disable
+
+public sealed class CharSplayNode : SplayNode<CharSplayNode>
+{
+    public Char Ch;
+
+    public CharSplayNode(char ch)
+    {
+        Ch = ch;
+    }
+}
+public sealed class StringSplayTree : SplayTree<CharSplayNode>
+{
+    public CharSplayNode Extract(int stIncl, int edExcl)
+    {
+        var g = Gather(stIncl, edExcl);
+
+        if (g == _root)
+        {
+            _root = null;
+        }
+        else
+        {
+            var p = g.Parent!;
+
+            if (g.IsLeftChild)
+                p.Left = null;
+            else
+                p.Right = null;
+
+            Splay(p);
+        }
+
+        return g;
+    }
+}
 
 public static class Program
 {
@@ -18,27 +53,44 @@ public static class Program
 
     public static void Solve(StreamReader sr, StreamWriter sw)
     {
-        var (n, m, k) = sr.ReadLine().Split(' ').Select(Int32.Parse).ToArray();
-        var inits = new long[n];
+        var (n, qc) = sr.ReadLine().Split(' ').Select(Int32.Parse).ToArray();
+        var s = sr.ReadLine();
+        var splay = new StringSplayTree();
 
-        for (var idx = 0; idx < n; idx++)
-            inits[idx] = Int64.Parse(sr.ReadLine());
+        foreach (var ch in s)
+            splay.InsertKth(splay.NodeCount, new CharSplayNode(ch));
 
-        var seg = new SumSeg(n);
-        seg.Init(inits);
-
-        for (var idx = 0; idx < m + k; idx++)
+        while (qc-- > 0)
         {
-            var (a, b, c) = sr.ReadLine().Split(' ').Select(Int64.Parse).ToArray();
-            if (a == 1)
+            var q = sr.ReadLine().Split(' ');
+            var type = Int32.Parse(q[0]);
+
+            if (type == 1)
             {
-                seg.Update((int)b - 1, c);
+                var node = new CharSplayNode(q[1][0]);
+                var pos = Int32.Parse(q[2]);
+
+                splay.InsertKth(pos - 1, node);
             }
             else
             {
-                var v = seg.Range((int)b - 1, (int)c);
-                sw.WriteLine(v);
+                var (stIncl, edIncl) = (Int32.Parse(q[1]), Int32.Parse(q[2]));
+                var k = splay.Extract(stIncl - 1, edIncl);
+
+                Print(sw, k);
+                sw.WriteLine();
             }
         }
+    }
+
+    private static void Print(StreamWriter sw, CharSplayNode k)
+    {
+        if (k.Left != null)
+            Print(sw, k.Left);
+
+        sw.Write(k.Ch);
+
+        if (k.Right != null)
+            Print(sw, k.Right);
     }
 }
