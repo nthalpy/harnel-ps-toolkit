@@ -109,6 +109,9 @@ namespace ProblemSolving.Templates.Merger
             foreach (var u in usings)
                 sb.AppendLine($"using {u};");
 
+            foreach (var u in usings)
+                sb.AppendLine($"namespace {u} {{}}");
+
             foreach (var tree in trees)
             {
                 var comp = tree.GetRoot() as CompilationUnitSyntax;
@@ -132,6 +135,9 @@ namespace ProblemSolving.Templates.Merger
 
                 sb.AppendLine(comp.ToFullString());
             }
+
+            sb.AppendLine($"// This is source code merged w/ template");
+            sb.AppendLine($"// Timestamp: {DateTime.Now:yyyy-MM-dd HH:mm:ss} UTC+9");
 
             return sb.ToString();
         }

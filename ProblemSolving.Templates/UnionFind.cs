@@ -1,0 +1,66 @@
+﻿using System.Collections.Generic;
+
+namespace ProblemSolving.Templates
+{
+    [IncludeIfReferenced]
+    public class UnionFind
+    {
+        private int[] _set;
+        private int[] _rank;
+        private List<int> _buffer;
+
+        public UnionFind(int n)
+        {
+            _set = new int[n];
+            _rank = new int[n];
+            _buffer = new List<int>(n);
+
+            for (var idx = 0; idx < n; idx++)
+            {
+                _set[idx] = idx;
+                _rank[idx] = 1;
+            }
+        }
+
+        public int Find(int v)
+        {
+            if (_set[v] == _set[_set[v]])
+                return _set[v];
+
+            var root = v;
+
+            _buffer.Clear();
+            do
+            {
+                _buffer.Add(root);
+                root = _set[root];
+            }
+            while (root != _set[root]);
+
+            foreach (var val in _buffer)
+                _set[val] = root;
+
+            return root;
+        }
+
+        public void Union(int l, int r)
+        {
+            var leftRoot = Find(l);
+            var rightRoot = Find(r);
+
+            if (leftRoot == rightRoot)
+                return;
+
+            if (_rank[leftRoot] < _rank[rightRoot])
+            {
+                _set[leftRoot] = rightRoot;
+                _rank[rightRoot] += _rank[leftRoot];
+            }
+            else
+            {
+                _set[rightRoot] = leftRoot;
+                _rank[leftRoot] += _rank[rightRoot];
+            }
+        }
+    }
+}
