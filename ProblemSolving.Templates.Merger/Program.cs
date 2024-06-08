@@ -63,8 +63,11 @@ namespace ProblemSolving.Templates.Merger
                             if (typeRef.Module.Name.Contains("ProblemSolving"))
                                 q.Enqueue(methodDef);
 
-                            if (methodDef.DeclaringType.CustomAttributes.Any(attr => attr.AttributeType.Name == nameof(IncludeIfReferenced)))
+                            if (methodDef != null
+                                && methodDef.DeclaringType.CustomAttributes.Any(attr => attr.AttributeType.Name == nameof(IncludeIfReferenced)))
+                            {
                                 referencedTypes.Add(methodDef.DeclaringType);
+                            }
                         }
                     }
             }
