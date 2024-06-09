@@ -5,15 +5,19 @@ using System.Runtime.CompilerServices;
 
 namespace ProblemSolving.Templates.SegmentTree
 {
+    /// <summary>
+    /// Generic segment tree w/ Group operations.
+    /// </summary>
     [IncludeIfReferenced]
-    public abstract class GenericSeg<TElement, TUpdate>
+    public abstract class GenericGroupSeg<TElement, TUpdate, TDiff>
         where TElement : struct
         where TUpdate : struct
+        where TDiff : struct
     {
         private TElement[] _tree;
         private int _leafMask;
 
-        public GenericSeg(int size)
+        public GenericGroupSeg(int size)
         {
             _leafMask = (int)BitOperations.RoundUpToPowerOf2((uint)size);
             var treeSize = _leafMask << 1;
@@ -34,12 +38,11 @@ namespace ProblemSolving.Templates.SegmentTree
         public void Update(int index, TUpdate val)
         {
             var curr = _leafMask | index;
-            _tree[curr] = UpdateElement(_tree[curr], val);
-            curr >>= 1;
+            var diff = CreateDiff(_tree[curr], val);
 
             while (curr != 0)
             {
-                _tree[curr] = Merge(_tree[2 * curr], _tree[2 * curr + 1]);
+                _tree[curr] = ApplyDiff(_tree[curr], diff);
                 curr >>= 1;
             }
         }
@@ -81,7 +84,8 @@ namespace ProblemSolving.Templates.SegmentTree
             return aggregated;
         }
 
-        protected abstract TElement UpdateElement(TElement element, TUpdate val);
+        protected abstract TDiff CreateDiff(TElement element, TUpdate val);
+        protected abstract TElement ApplyDiff(TElement element, TDiff diff);
         protected abstract TElement Merge(TElement l, TElement r);
     }
 }

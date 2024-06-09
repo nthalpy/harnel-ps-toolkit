@@ -1,8 +1,15 @@
+using ProblemSolving.Templates.Merger;
 using ProblemSolving.Templates.Splay;
 using ProblemSolving.Templates.Utility;
 using System;
 using System.IO;
 using System.Linq;
+namespace ProblemSolving.Templates.Merger {}
+namespace ProblemSolving.Templates.Splay {}
+namespace ProblemSolving.Templates.Utility {}
+namespace System {}
+namespace System.IO {}
+namespace System.Linq {}
 
 #nullable disable
 
@@ -95,6 +102,7 @@ public static class Program
     }
 }
 
+
 namespace ProblemSolving.Templates.Utility
 {
     public static class DeconstructHelper
@@ -108,6 +116,7 @@ namespace ProblemSolving.Templates.Utility
         public static void Deconstruct<T>(this T[] arr, out T v1, out T v2, out T v3, out T v4, out T v5, out T v6, out T v7, out T v8) => (v1, v2, v3, v4, v5, v6, v7, v8) = (arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], arr[6], arr[7]);
     }
 }
+
 
 namespace ProblemSolving.Templates.Splay
 {
@@ -333,6 +342,7 @@ namespace ProblemSolving.Templates.Splay
     }
 }
 
+
 namespace ProblemSolving.Templates.Splay
 {
     public abstract class SplayNode<TSelf> where TSelf : SplayNode<TSelf>
@@ -353,3 +363,5 @@ namespace ProblemSolving.Templates.Splay
     }
 }
 
+// This is source code merged w/ template
+// Timestamp: 2024-06-09 14:49:28 UTC+9

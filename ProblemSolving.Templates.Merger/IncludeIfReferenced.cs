@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace ProblemSolving
+namespace ProblemSolving.Templates.Merger
 {
     /// <summary>
     /// This file is intentionally placed at ProblemSolving namespace

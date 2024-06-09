@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ProblemSolving.Templates.TestInterfaces\ProblemSolving.Templates.TestInterfaces.csproj" />
     <ProjectReference Include="..\ProblemSolving.Templates\ProblemSolving.Templates.csproj" />
   </ItemGroup>
 

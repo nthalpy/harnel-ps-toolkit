@@ -1,4 +1,6 @@
-﻿namespace ProblemSolving.Templates.Splay
+﻿using ProblemSolving.Templates.Merger;
+
+namespace ProblemSolving.Templates.Splay
 {
     [IncludeIfReferenced]
     public class SplayTree<TNode> where TNode : SplayNode<TNode>

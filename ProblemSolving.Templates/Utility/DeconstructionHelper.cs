@@ -1,4 +1,6 @@
-﻿namespace ProblemSolving.Templates.Utility
+﻿using ProblemSolving.Templates.Merger;
+
+namespace ProblemSolving.Templates.Utility
 {
     [IncludeIfReferenced]
     public static class DeconstructHelper

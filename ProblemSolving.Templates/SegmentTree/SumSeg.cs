@@ -1,9 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using ProblemSolving.Templates.Merger;
+using System.Collections.Generic;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 
 namespace ProblemSolving.Templates.SegmentTree
 {
+    /// <summary>
+    /// Fastest implementation of sum segment tree
+    /// </summary>
     [IncludeIfReferenced]
     public sealed class SumSeg
     {

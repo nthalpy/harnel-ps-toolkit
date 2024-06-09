@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProblemSolving.Templates.Merger;
+using System;
 
 namespace ProblemSolving.Templates.Splay
 {

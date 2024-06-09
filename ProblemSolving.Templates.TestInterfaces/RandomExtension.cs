@@ -1,11 +1,6 @@
-﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
-namespace ProblemSolving.Templates.UnitTests
+namespace ProblemSolving.Templates.TestInterfaces
 {
     public static class RandomExtension
     {
@@ -20,6 +15,14 @@ namespace ProblemSolving.Templates.UnitTests
         {
             var vals = EnumValueHolder<TEnum>.Values;
             return vals[rd.Next(0, vals.Length)];
+        }
+
+        public static (int stIncl, int edExcl) NextRange(this Random rd, int maxEdExcl)
+        {
+            var stIncl = rd.Next(0, maxEdExcl);
+            var edExcl = 1 + rd.Next(stIncl, maxEdExcl);
+
+            return (stIncl, edExcl);
         }
     }
 }
