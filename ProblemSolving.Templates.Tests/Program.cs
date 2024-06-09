@@ -1,6 +1,6 @@
 ﻿using BenchmarkDotNet.Running;
 
-namespace ProblemSolving.Templates.Benchmark
+namespace ProblemSolving.Templates.Tests
 {
     public static class Program
     {

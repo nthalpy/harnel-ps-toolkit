@@ -8,11 +8,11 @@
 
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.13.12" />
+    <PackageReference Include="NUnit" Version="3.13.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ProblemSolving.Templates.TestInterfaces\ProblemSolving.Templates.TestInterfaces.csproj" />
-    <ProjectReference Include="..\ProblemSolving.Templates\ProblemSolving.Templates.csproj" />
   </ItemGroup>
 
 </Project>
