@@ -1,26 +1,20 @@
-﻿using ProblemSolving.Templates.Merger;
-using ProblemSolving.Templates.SegmentTree;
+﻿using ProblemSolving.Templates.SegmentTree;
 
 namespace ProblemSolving.Templates.TestInterfaces.PointUpdateRangeQuery
 {
     public class GenericSumSegPointUpdateRangeSum : PointUpdateRangeSumInterface
     {
-        [IncludeIfReferenced]
-        public sealed class GenericSumSeg : GenericSeg<long, long>
+        public struct Op : IGenericSegOperation<long, long>
         {
-            public GenericSumSeg(int size) : base(size)
-            {
-            }
-
-            protected override long Merge(long l, long r) => l + r;
-            protected override long UpdateElement(long element, long val) => val;
+            public long Merge(long l, long r) => l + r;
+            public long UpdateElement(long elem, long update) => update;
         }
 
-        private GenericSumSeg _seg = default!;
+        private GenericSeg<long, long, Op> _seg = default!;
 
         public override void Initialize(int size)
         {
-            _seg = new GenericSumSeg(size);
+            _seg = new GenericSeg<long, long, Op>(size);
         }
 
         public override void PointUpdate(int index, long val) => _seg.Update(index, val);

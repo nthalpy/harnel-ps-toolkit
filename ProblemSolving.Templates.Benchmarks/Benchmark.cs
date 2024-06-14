@@ -1,4 +1,4 @@
-﻿namespace ProblemSolving.Templates.Tests
+﻿namespace ProblemSolving.Templates.Benchmarks
 {
     public abstract class Benchmark<TInterface>
     {

@@ -22,6 +22,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProblemSolving.Templates.Te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProblemSolving.Templates.Tests", "ProblemSolving.Templates.Tests\ProblemSolving.Templates.Tests.csproj", "{5379C38D-14CF-4D00-8055-874E912E873B}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProblemSolving.Templates.Benchmarks", "ProblemSolving.Templates.Benchmarks\ProblemSolving.Templates.Benchmarks.csproj", "{503AC5CB-1FB2-4FF4-B306-FBECF6CE9B57}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,6 +54,10 @@ Global
 		{5379C38D-14CF-4D00-8055-874E912E873B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5379C38D-14CF-4D00-8055-874E912E873B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5379C38D-14CF-4D00-8055-874E912E873B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{503AC5CB-1FB2-4FF4-B306-FBECF6CE9B57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{503AC5CB-1FB2-4FF4-B306-FBECF6CE9B57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{503AC5CB-1FB2-4FF4-B306-FBECF6CE9B57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{503AC5CB-1FB2-4FF4-B306-FBECF6CE9B57}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -61,6 +67,7 @@ Global
 		{CB6583AC-E6B0-4F1F-981E-E22BDC51710B} = {A9ADA234-ACE3-470B-A2C3-A5FED9DECD91}
 		{DE679C8F-86ED-453D-B4B9-42C31E165395} = {A9ADA234-ACE3-470B-A2C3-A5FED9DECD91}
 		{5379C38D-14CF-4D00-8055-874E912E873B} = {A9ADA234-ACE3-470B-A2C3-A5FED9DECD91}
+		{503AC5CB-1FB2-4FF4-B306-FBECF6CE9B57} = {A9ADA234-ACE3-470B-A2C3-A5FED9DECD91}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {ACFC5D3A-A4BB-4A41-986C-993886B8D479}

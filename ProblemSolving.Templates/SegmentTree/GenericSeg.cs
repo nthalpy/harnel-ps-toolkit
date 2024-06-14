@@ -1,17 +1,18 @@
-﻿using ProblemSolving.Templates.Merger;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 
 namespace ProblemSolving.Templates.SegmentTree
 {
-    [IncludeIfReferenced]
-    public abstract class GenericSeg<TElement, TUpdate>
+    public class GenericSeg<TElement, TUpdate, TOperation>
         where TElement : struct
         where TUpdate : struct
+        where TOperation : struct, IGenericSegOperation<TElement, TUpdate>
     {
         private TElement[] _tree;
         private int _leafMask;
+
+        private TOperation _op = default;
 
         public GenericSeg(int size)
         {
@@ -27,19 +28,19 @@ namespace ProblemSolving.Templates.SegmentTree
                 _tree[_leafMask | idx] = init[idx];
 
             for (var idx = _leafMask - 1; idx > 0; idx--)
-                _tree[idx] = Merge(_tree[2 * idx], _tree[2 * idx + 1]);
+                _tree[idx] = _op.Merge(_tree[2 * idx], _tree[2 * idx + 1]);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Update(int index, TUpdate val)
         {
             var curr = _leafMask | index;
-            _tree[curr] = UpdateElement(_tree[curr], val);
+            _tree[curr] = _op.UpdateElement(_tree[curr], val);
             curr >>= 1;
 
             while (curr != 0)
             {
-                _tree[curr] = Merge(_tree[2 * curr], _tree[2 * curr + 1]);
+                _tree[curr] = _op.Merge(_tree[2 * curr], _tree[2 * curr + 1]);
                 curr >>= 1;
             }
         }
@@ -60,7 +61,7 @@ namespace ProblemSolving.Templates.SegmentTree
                     if (isFirst)
                         aggregated = _tree[leftNode++];
                     else
-                        aggregated = Merge(aggregated, _tree[leftNode++]);
+                        aggregated = _op.Merge(aggregated, _tree[leftNode++]);
 
                     isFirst = false;
                 }
@@ -69,7 +70,7 @@ namespace ProblemSolving.Templates.SegmentTree
                     if (isFirst)
                         aggregated = _tree[rightNode--];
                     else
-                        aggregated = Merge(aggregated, _tree[rightNode--]);
+                        aggregated = _op.Merge(aggregated, _tree[rightNode--]);
 
                     isFirst = false;
                 }
@@ -80,8 +81,5 @@ namespace ProblemSolving.Templates.SegmentTree
 
             return aggregated;
         }
-
-        protected abstract TElement UpdateElement(TElement element, TUpdate val);
-        protected abstract TElement Merge(TElement l, TElement r);
     }
 }

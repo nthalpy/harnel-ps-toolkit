@@ -3,10 +3,11 @@ using BenchmarkDotNet.Jobs;
 using ProblemSolving.Templates.TestInterfaces.PointUpdateRangeQuery;
 using System;
 
-namespace ProblemSolving.Templates.Tests.Benchmarks
+namespace ProblemSolving.Templates.Benchmarks.Impl
 {
-    [MediumRunJob(RuntimeMoniker.Net60)]
-    [DisassemblyDiagnoser]
+    [SimpleJob(RuntimeMoniker.Net60)]
+    [SimpleJob(RuntimeMoniker.Net70)]
+    [SimpleJob(RuntimeMoniker.Net80)]
     public partial class PointUpdateRangeSumInterfaceBenchmark : Benchmark<PointUpdateRangeSumInterface>
     {
         [Params(1_000_000, 2_000_000, 5_000_000)]
@@ -27,7 +28,13 @@ namespace ProblemSolving.Templates.Tests.Benchmarks
         }
 
         [Benchmark]
+        public void OldGroupGenericSumSegPointUpdateRangeSum() => Fuzz(new OldGroupGenericSumSegPointUpdateRangeSum());
+
+        [Benchmark]
         public void GroupGenericSumSegPointUpdateRangeSum() => Fuzz(new GroupGenericSumSegPointUpdateRangeSum());
+
+        [Benchmark]
+        public void OldGenericSumSegPointUpdateRangeSum() => Fuzz(new OldGenericSumSegPointUpdateRangeSum());
 
         [Benchmark]
         public void GenericSumSegPointUpdateRangeSum() => Fuzz(new GenericSumSegPointUpdateRangeSum());

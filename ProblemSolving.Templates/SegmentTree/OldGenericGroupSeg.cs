@@ -5,22 +5,20 @@ using System.Runtime.CompilerServices;
 
 namespace ProblemSolving.Templates.SegmentTree
 {
+
     /// <summary>
     /// Generic segment tree w/ Group operations.
     /// </summary>
     [IncludeIfReferenced]
-    public class GenericGroupSeg<TElement, TUpdate, TDiff, TOp>
+    public abstract class OldGenericGroupSeg<TElement, TUpdate, TDiff>
         where TElement : struct
         where TUpdate : struct
         where TDiff : struct
-        where TOp : struct, IGenericGroupSegOperation<TElement, TUpdate, TDiff>
     {
         private TElement[] _tree;
         private int _leafMask;
 
-        private TOp _op = default;
-
-        public GenericGroupSeg(int size)
+        public OldGenericGroupSeg(int size)
         {
             _leafMask = (int)BitOperations.RoundUpToPowerOf2((uint)size);
             var treeSize = _leafMask << 1;
@@ -34,18 +32,18 @@ namespace ProblemSolving.Templates.SegmentTree
                 _tree[_leafMask | idx] = init[idx];
 
             for (var idx = _leafMask - 1; idx > 0; idx--)
-                _tree[idx] = _op.Merge(_tree[2 * idx], _tree[2 * idx + 1]);
+                _tree[idx] = Merge(_tree[2 * idx], _tree[2 * idx + 1]);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Update(int index, TUpdate val)
         {
             var curr = _leafMask | index;
-            var diff = _op.CreateDiff(_tree[curr], val);
+            var diff = CreateDiff(_tree[curr], val);
 
             while (curr != 0)
             {
-                _tree[curr] = _op.ApplyDiff(_tree[curr], diff);
+                _tree[curr] = ApplyDiff(_tree[curr], diff);
                 curr >>= 1;
             }
         }
@@ -56,14 +54,29 @@ namespace ProblemSolving.Templates.SegmentTree
             var leftNode = _leafMask | stIncl;
             var rightNode = _leafMask | (edExcl - 1);
 
-            var aggregated = _op.Identity();
+            var aggregated = default(TElement);
+            var isFirst = true;
 
             while (leftNode <= rightNode)
             {
                 if ((leftNode & 1) == 1)
-                    aggregated = _op.Merge(aggregated, _tree[leftNode++]);
+                {
+                    if (isFirst)
+                        aggregated = _tree[leftNode++];
+                    else
+                        aggregated = Merge(aggregated, _tree[leftNode++]);
+
+                    isFirst = false;
+                }
                 if ((rightNode & 1) == 0)
-                    aggregated = _op.Merge(aggregated, _tree[rightNode--]);
+                {
+                    if (isFirst)
+                        aggregated = _tree[rightNode--];
+                    else
+                        aggregated = Merge(aggregated, _tree[rightNode--]);
+
+                    isFirst = false;
+                }
 
                 leftNode >>= 1;
                 rightNode >>= 1;
@@ -71,5 +84,9 @@ namespace ProblemSolving.Templates.SegmentTree
 
             return aggregated;
         }
+
+        protected abstract TDiff CreateDiff(TElement element, TUpdate val);
+        protected abstract TElement ApplyDiff(TElement element, TDiff diff);
+        protected abstract TElement Merge(TElement l, TElement r);
     }
 }
