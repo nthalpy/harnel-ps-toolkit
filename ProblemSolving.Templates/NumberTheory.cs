@@ -1,5 +1,4 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
-using ProblemSolving.Templates.Merger;
+﻿using ProblemSolving.Templates.Merger;
 using System;
 using System.Collections.Generic;
 
@@ -8,6 +7,15 @@ namespace ProblemSolving.Templates
     [IncludeIfReferenced]
     public static class NumberTheory
     {
+        public static long GCD(long x, long y)
+        {
+            while (x > 0 && y > 0)
+                if (x > y) x %= y;
+                else y %= x;
+
+            return Math.Max(x, y);
+        }
+
         public static long FastPow(long b, long p, long mod)
         {
             var rv = 1L;
