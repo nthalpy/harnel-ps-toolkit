@@ -50,6 +50,9 @@ namespace ProblemSolving.Templates.Merger
                 if (!handledMethodDefs.Add(curr))
                     continue;
 
+                if (curr == null)
+                    continue;
+
                 if (curr.Body != null)
                     foreach (var inst in curr.Body.Instructions)
                     {
@@ -123,9 +126,9 @@ namespace ProblemSolving.Templates.Merger
 
                 comp = comp.WithUsings(new SyntaxList<UsingDirectiveSyntax>());
 
-                foreach (var classDecl in comp.DescendantNodes().OfType<ClassDeclarationSyntax>())
+                foreach (var typeDecl in comp.DescendantNodes().OfType<TypeDeclarationSyntax>())
                 {
-                    foreach (var attrList in classDecl.AttributeLists)
+                    foreach (var attrList in typeDecl.AttributeLists)
                     {
                         if (attrList.Attributes.Any(attr => attr.Name.ToFullString() == nameof(IncludeIfReferenced)))
                         {
