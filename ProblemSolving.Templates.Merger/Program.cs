@@ -15,10 +15,9 @@ namespace ProblemSolving.Templates.Merger
             if (parseResult.Errors.Any())
             {
                 foreach (var err in parseResult.Errors)
-                {
                     Console.WriteLine(err);
-                    throw new InvalidOperationException();
-                }
+
+                throw new InvalidOperationException();
             }
 
             var option = parseResult.Value!;
