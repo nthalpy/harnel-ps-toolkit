@@ -7,19 +7,6 @@ using System.Text;
 
 namespace ProblemSolving.Templates.Merger
 {
-    public sealed class MergerOption
-    {
-        public string DllDirectory => Path.GetDirectoryName(DllPath)!;
-
-        [Option("DllPath", Required = true)]
-        public string DllPath { get; set; } = default!;
-
-        [Option("EntrypointPath", Required = true)]
-        public string EntrypointPath { get; set; } = default!;
-
-        [Option("StandalonePath", Required = true)]
-        public string StandalonePath { get; set; } = default!;
-    }
     public static class Program
     {
         public static void Main(string[] args)
@@ -41,38 +28,65 @@ namespace ProblemSolving.Templates.Merger
             var entrypoint = module.EntryPoint;
 
             var referencedTypes = new HashSet<TypeDefinition>();
-            var handledMethodDefs = new HashSet<MethodDefinition>();
-            var q = new Queue<MethodDefinition>();
-            q.Enqueue(entrypoint);
 
-            while (q.TryDequeue(out var curr))
+            var methodDefQueue = new Queue<MethodDefinition>();
+            var methodDefInqueue = new HashSet<MethodDefinition>();
+            methodDefQueue.Enqueue(entrypoint);
+            methodDefInqueue.Add(entrypoint);
+
+            void EnqueueTypeDefs(TypeReference typeRef)
             {
-                if (!handledMethodDefs.Add(curr))
-                    continue;
+                var resolved = typeRef.Resolve();
+                if (resolved == null)
+                {
+                    Console.WriteLine($"Unable to resolve {typeRef.FullName}");
+                    return;
+                }
 
-                if (curr == null)
-                    continue;
+                // Already handled
+                if (!referencedTypes.Add(resolved))
+                    return;
 
-                if (curr.Body != null)
-                    foreach (var inst in curr.Body.Instructions)
+                if (resolved.BaseType != null)
+                    EnqueueTypeDefs(typeRef);
+
+                foreach (var interfaceRef in resolved.Interfaces)
+                    EnqueueTypeDefs(interfaceRef.InterfaceType);
+
+                if (typeRef is GenericInstanceType genTypeRef)
+                {
+                    var args = genTypeRef.GenericArguments;
+                    if (args != null && args.Any())
                     {
-                        Console.WriteLine(inst);
-
-                        if (inst.Operand is MethodReference methodRef)
-                        {
-                            var methodDef = methodRef.Resolve();
-                            var typeRef = methodRef.DeclaringType.Resolve();
-
-                            if (typeRef.Module.Name.Contains("ProblemSolving"))
-                                q.Enqueue(methodDef);
-
-                            if (methodDef != null
-                                && methodDef.DeclaringType.CustomAttributes.Any(attr => attr.AttributeType.Name == nameof(IncludeIfReferenced)))
-                            {
-                                referencedTypes.Add(methodDef.DeclaringType);
-                            }
-                        }
+                        foreach (var arg in args)
+                            EnqueueTypeDefs(arg);
                     }
+                }
+            }
+
+            while (methodDefQueue.TryDequeue(out var curr))
+            {
+                if (curr.Body == null)
+                {
+                    Console.WriteLine($"{curr.FullName} has no body");
+                    continue;
+                }
+
+                foreach (var inst in curr.Body.Instructions)
+                {
+                    if (inst.Operand is MethodReference methodRef)
+                    {
+                        EnqueueTypeDefs(methodRef.DeclaringType);
+
+                        var resolved = methodRef.Resolve();
+                        if (resolved != null && methodDefInqueue.Add(resolved))
+                            methodDefQueue.Enqueue(resolved);
+                    }
+                    else if (inst.Operand is TypeReference typeRef)
+                    {
+                        EnqueueTypeDefs(typeRef);
+                    }
+                }
             }
 
             var mergeTargets = new List<string>();
@@ -80,7 +94,10 @@ namespace ProblemSolving.Templates.Merger
 
             foreach (var type in referencedTypes)
             {
-                var attr = type.CustomAttributes.Single(attr => attr.AttributeType.Name == nameof(IncludeIfReferenced));
+                var attr = type.CustomAttributes.FirstOrDefault(attr => attr.AttributeType.Name == nameof(IncludeIfReferenced));
+                if (attr == null)
+                    continue;
+
                 var arg0 = attr.ConstructorArguments[0].Value as string;
 
                 if (arg0 != null)
