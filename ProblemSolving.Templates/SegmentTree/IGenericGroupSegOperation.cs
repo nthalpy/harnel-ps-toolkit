@@ -1,5 +1,8 @@
-﻿namespace ProblemSolving.Templates.SegmentTree
+﻿using ProblemSolving.Templates.Merger;
+
+namespace ProblemSolving.Templates.SegmentTree
 {
+    [IncludeIfReferenced]
     public interface IGenericGroupSegOperation<TElement, TUpdate, TDiff>
     {
         TElement Identity();
