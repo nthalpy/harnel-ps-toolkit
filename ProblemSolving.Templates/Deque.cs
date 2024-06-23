@@ -1,6 +1,4 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
-using ProblemSolving.Templates.Merger;
-using System;
+﻿using System;
 
 namespace ProblemSolving.Templates
 {

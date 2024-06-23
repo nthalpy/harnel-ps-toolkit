@@ -93,7 +93,7 @@ namespace ProblemSolving.Templates.Merger
 
             foreach (var type in referencedTypes)
             {
-                var attr = type.CustomAttributes.FirstOrDefault(attr => attr.AttributeType.Name == nameof(IncludeIfReferenced));
+                var attr = type.CustomAttributes.FirstOrDefault(attr => attr.AttributeType.Name == "IncludeIfReferenced");
                 if (attr == null)
                     continue;
 
@@ -146,7 +146,7 @@ namespace ProblemSolving.Templates.Merger
                 {
                     foreach (var attrList in typeDecl.AttributeLists)
                     {
-                        if (attrList.Attributes.Any(attr => attr.Name.ToFullString() == nameof(IncludeIfReferenced)))
+                        if (attrList.Attributes.Any(attr => attr.Name.ToFullString() == "IncludeIfReferenced"))
                         {
                             comp = comp.RemoveNode(attrList, SyntaxRemoveOptions.KeepNoTrivia);
                             if (comp == null)

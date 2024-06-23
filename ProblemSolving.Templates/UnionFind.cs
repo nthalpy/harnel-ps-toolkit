@@ -1,5 +1,4 @@
-﻿using ProblemSolving.Templates.Merger;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace ProblemSolving.Templates
 {

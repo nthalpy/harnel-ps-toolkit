@@ -1,6 +1,4 @@
-﻿using ProblemSolving.Templates.Merger;
-
-namespace ProblemSolving.Templates.SegmentTree.SegOperations
+﻿namespace ProblemSolving.Templates.SegmentTree.SegOperations
 {
     [IncludeIfReferenced]
     public struct SumSegOp : IAbelianGroupSegOp<long, long, long>

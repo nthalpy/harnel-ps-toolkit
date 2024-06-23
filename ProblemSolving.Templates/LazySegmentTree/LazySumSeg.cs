@@ -1,6 +1,4 @@
-﻿using ProblemSolving.Templates.Merger;
-
-namespace ProblemSolving.Templates.LazySegmentTree
+﻿namespace ProblemSolving.Templates.LazySegmentTree
 {
     [IncludeIfReferenced]
     public sealed class LazySumSeg : GenericLazySeg<long, long, long>

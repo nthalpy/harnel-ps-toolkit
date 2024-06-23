@@ -1,6 +1,4 @@
-﻿using ProblemSolving.Templates.Merger;
-
-namespace ProblemSolving.Templates.SegmentTree
+﻿namespace ProblemSolving.Templates.SegmentTree
 {
     [IncludeIfReferenced]
     public interface IAbelianGroupSegOp<TElement, TUpdate, TDiff>

@@ -1,5 +1,4 @@
-﻿using ProblemSolving.Templates.Merger;
-using System;
+﻿using System;
 using System.Runtime.CompilerServices;
 
 namespace ProblemSolving.Templates

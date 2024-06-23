@@ -1,6 +1,4 @@
-﻿using ProblemSolving.Templates.Merger;
-
-namespace ProblemSolving.Templates
+﻿namespace ProblemSolving.Templates
 {
     [IncludeIfReferenced]
     public static class ZAlgorithm

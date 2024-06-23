@@ -1,6 +1,4 @@
-﻿using ProblemSolving.Templates.Merger;
-using ProblemSolving.Templates.SegmentTree;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 

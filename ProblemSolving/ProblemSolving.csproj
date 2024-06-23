@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="dotnet $(MSBuildProjectDirectory)\$(OutputPath)ProblemSolving.Templates.Merger.dll --DllPath $(MSBuildProjectDirectory)\$(OutputPath)ProblemSolving.dll --EntrypointPath $(MSBuildProjectDirectory)\Program.cs --StandalonePath $(MSBuildProjectDirectory)\Program.Standalone.cs" />
+    <Exec Command="dotnet $(MSBuildProjectDirectory)\..\ProblemSolving.Merger\bin\Debug\net6.0\ProblemSolving.Merger.dll --DllPath $(MSBuildProjectDirectory)\$(OutputPath)ProblemSolving.dll --EntrypointPath $(MSBuildProjectDirectory)\Program.cs --StandalonePath $(MSBuildProjectDirectory)\Program.Standalone.cs" />
   </Target>
-  
+
 </Project>

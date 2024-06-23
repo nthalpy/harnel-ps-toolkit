@@ -1,6 +1,4 @@
-﻿using ProblemSolving.Templates.Merger;
-
-namespace ProblemSolving.Templates.Splay
+﻿namespace ProblemSolving.Templates.Splay
 {
     [IncludeIfReferenced]
     public abstract class SplayNode<TSelf> where TSelf : SplayNode<TSelf>

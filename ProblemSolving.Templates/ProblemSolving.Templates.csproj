@@ -9,8 +9,4 @@
     <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ProblemSolving.Templates.Merger\ProblemSolving.Templates.Merger.csproj" />
-  </ItemGroup>
-
 </Project>
