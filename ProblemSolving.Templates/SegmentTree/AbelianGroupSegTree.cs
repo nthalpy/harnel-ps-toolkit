@@ -28,6 +28,9 @@ namespace ProblemSolving.Templates.SegmentTree
             _tree = new TElement[treeSize];
         }
 
+        public TElement AllRange => _tree[1];
+        public TElement ElementAt(int idx) => _tree[_leafMask | idx];
+
         public void Init(IList<TElement> init)
         {
             for (var idx = 0; idx < init.Count; idx++)
