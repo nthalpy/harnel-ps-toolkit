@@ -3,7 +3,7 @@
 namespace ProblemSolving.Templates.SegmentTree
 {
     [IncludeIfReferenced]
-    public interface IGenericGroupSegOperation<TElement, TUpdate, TDiff>
+    public interface IAbelianGroupSegOp<TElement, TUpdate, TDiff>
     {
         TElement Identity();
         TDiff CreateDiff(TElement element, TUpdate val);

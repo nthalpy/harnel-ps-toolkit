@@ -6,21 +6,21 @@ using System.Runtime.CompilerServices;
 namespace ProblemSolving.Templates.SegmentTree
 {
     /// <summary>
-    /// Generic segment tree w/ Group operations.
+    /// Generic segment tree w/ Abelian group operations.
     /// </summary>
     [IncludeIfReferenced]
-    public class GenericGroupSeg<TElement, TUpdate, TDiff, TOp>
+    public class AbelianGroupSegTree<TElement, TUpdate, TDiff, TOp>
         where TElement : struct
         where TUpdate : struct
         where TDiff : struct
-        where TOp : struct, IGenericGroupSegOperation<TElement, TUpdate, TDiff>
+        where TOp : struct, IAbelianGroupSegOp<TElement, TUpdate, TDiff>
     {
         private TElement[] _tree;
         private int _leafMask;
 
         private TOp _op = default;
 
-        public GenericGroupSeg(int size)
+        public AbelianGroupSegTree(int size)
         {
             _leafMask = (int)BitOperations.RoundUpToPowerOf2((uint)size);
             var treeSize = _leafMask << 1;

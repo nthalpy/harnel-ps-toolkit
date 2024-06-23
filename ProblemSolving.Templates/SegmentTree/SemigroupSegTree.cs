@@ -1,23 +1,32 @@
-﻿using System.Collections.Generic;
+﻿using ProblemSolving.Templates.Merger;
+using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 
 namespace ProblemSolving.Templates.SegmentTree
 {
-    public class GenericSeg<TElement, TUpdate, TOperation>
+    [IncludeIfReferenced]
+    public class SemigroupSegTree<TElement, TUpdate, TOperation>
         where TElement : struct
         where TUpdate : struct
-        where TOperation : struct, IGenericSegOperation<TElement, TUpdate>
+        where TOperation : struct, ISemigroupSegOp<TElement, TUpdate>
     {
         private TElement[] _tree;
         private int _leafMask;
 
+        private List<int> _lefts;
+        private List<int> _rights;
+
         private TOperation _op = default;
 
-        public GenericSeg(int size)
+        public SemigroupSegTree(int size)
         {
             _leafMask = (int)BitOperations.RoundUpToPowerOf2((uint)size);
             var treeSize = _leafMask << 1;
+
+            _lefts = new List<int>();
+            _rights = new List<int>();
 
             _tree = new TElement[treeSize];
         }
@@ -51,33 +60,23 @@ namespace ProblemSolving.Templates.SegmentTree
             var leftNode = _leafMask | stIncl;
             var rightNode = _leafMask | (edExcl - 1);
 
-            var aggregated = default(TElement);
-            var isFirst = true;
-
             while (leftNode <= rightNode)
             {
                 if ((leftNode & 1) == 1)
-                {
-                    if (isFirst)
-                        aggregated = _tree[leftNode++];
-                    else
-                        aggregated = _op.Merge(aggregated, _tree[leftNode++]);
-
-                    isFirst = false;
-                }
+                    _lefts.Add(leftNode++);
                 if ((rightNode & 1) == 0)
-                {
-                    if (isFirst)
-                        aggregated = _tree[rightNode--];
-                    else
-                        aggregated = _op.Merge(aggregated, _tree[rightNode--]);
-
-                    isFirst = false;
-                }
+                    _rights.Add(rightNode--);
 
                 leftNode >>= 1;
                 rightNode >>= 1;
             }
+
+            foreach (var idx in _rights.AsEnumerable().Reverse())
+                _lefts.Add(idx);
+
+            var aggregated = _tree[_lefts[0]];
+            foreach (var idx in _lefts.Skip(1))
+                aggregated = _op.Merge(aggregated, _tree[idx]);
 
             return aggregated;
         }

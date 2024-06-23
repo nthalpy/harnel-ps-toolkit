@@ -48,11 +48,5 @@ namespace ProblemSolving.Templates.Tests.Impl
             => Validate(
                 Fuzz(new NaivePointUpdateRangeSum(), randomSeed),
                 Fuzz(new GenericSumSegPointUpdateRangeSum(), randomSeed));
-
-        [Test]
-        public void NonAssociativeGenericSumSegPointUpdateRangeSum([Range(1, 100)] int randomSeed)
-            => Validate(
-                Fuzz(new NaivePointUpdateRangeSum(), randomSeed),
-                Fuzz(new NonAssociativeGenericSumSegPointUpdateRangeSum(), randomSeed));
     }
 }

@@ -4,7 +4,7 @@ namespace ProblemSolving.Templates.TestInterfaces.PointUpdateRangeQuery
 {
     public class GroupGenericSumSegPointUpdateRangeSum : PointUpdateRangeSumInterface
     {
-        public struct Op : IGenericGroupSegOperation<long, long, long>
+        public struct Op : IAbelianGroupSegOp<long, long, long>
         {
             public long Identity() => 0;
             public long ApplyDiff(long element, long diff) => element + diff;
@@ -12,11 +12,11 @@ namespace ProblemSolving.Templates.TestInterfaces.PointUpdateRangeQuery
             public long Merge(long l, long r) => l + r;
         }
 
-        private GenericGroupSeg<long, long, long, Op> _seg = default!;
+        private AbelianGroupSegTree<long, long, long, Op> _seg = default!;
 
         public override void Initialize(int size)
         {
-            _seg = new GenericGroupSeg<long, long, long, Op>(size);
+            _seg = new AbelianGroupSegTree<long, long, long, Op>(size);
         }
 
         public override void PointUpdate(int index, long val) => _seg.Update(index, val);

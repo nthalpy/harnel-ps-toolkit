@@ -39,9 +39,6 @@ namespace ProblemSolving.Templates.Benchmarks.Impl
         [Benchmark]
         public void GenericSumSegPointUpdateRangeSum() => Fuzz(new GenericSumSegPointUpdateRangeSum());
 
-        [Benchmark]
-        public void NonAssociativeGenericSumSegPointUpdateRangeSum() => Fuzz(new NonAssociativeGenericSumSegPointUpdateRangeSum());
-
         [Benchmark(Baseline = true)]
         public void SumSegPointUpdateRangeSum() => Fuzz(new SumSegPointUpdateRangeSum());
     }
