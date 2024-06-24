@@ -65,6 +65,9 @@ namespace ProblemSolving.Templates.SegmentTree
             var leftNode = _leafMask | stIncl;
             var rightNode = _leafMask | (edExcl - 1);
 
+            _lefts.Clear();
+            _rights.Clear();
+
             while (leftNode <= rightNode)
             {
                 if ((leftNode & 1) == 1)

@@ -33,20 +33,6 @@ namespace ProblemSolving.Templates.LazySegmentTree
                 _tree[idx] = MergeElement(_tree[2 * idx], _tree[2 * idx + 1]);
         }
 
-        public void PointUpdate(int index, TUpdate val)
-        {
-            var curr = _leafMask | index;
-
-            _tree[curr] = UpdatePointElement(_tree[curr], val);
-            curr >>= 1;
-
-            while (curr > 0)
-            {
-                _tree[curr] = MergeElement(_tree[2 * curr], _tree[2 * curr + 1]);
-                curr >>= 1;
-            }
-        }
-
         public void RangeUpdate(int stIncl, int edExcl, TUpdate val)
         {
             RangeUpdate(1, 0, _leafMask, stIncl, edExcl, val);
@@ -70,11 +56,17 @@ namespace ProblemSolving.Templates.LazySegmentTree
             }
 
             ApplyAndPropagate(idx, lIncl, rExcl);
-            _tree[idx] = UpdateRangeElement(Math.Max(lIncl, stIncl), Math.Min(rExcl, edExcl), _tree[idx], val);
 
             var mid = (lIncl + rExcl) / 2;
             RangeUpdate(2 * idx, lIncl, mid, stIncl, edExcl, val);
             RangeUpdate(2 * idx + 1, mid, rExcl, stIncl, edExcl, val);
+
+            if ((idx & _leafMask) == 0)
+            {
+                ApplyAndPropagate(2 * idx, lIncl, mid);
+                ApplyAndPropagate(2 * idx + 1, mid, rExcl);
+                _tree[idx] = MergeElement(_tree[2 * idx], _tree[2 * idx + 1]);
+            }
         }
 
         public TElement RangeQuery(int stIncl, int edExcl)
@@ -144,10 +136,8 @@ namespace ProblemSolving.Templates.LazySegmentTree
         protected abstract TLazy CreateLazy(int lIncl, int rExcl, TUpdate val);
         protected abstract TLazy MergeLazy(TLazy l, TLazy r);
         protected abstract TElement ApplyLazy(int lIncl, int rExcl, TElement element, TLazy lazy);
-
-        protected abstract TElement UpdatePointElement(TElement element, TUpdate val);
-        protected abstract TElement UpdateRangeElement(int stIncl, int edExcl, TElement element, TUpdate val);
-        protected abstract TElement MergeElement(TElement l, TElement r);
         protected abstract (TLazy left, TLazy right) SplitLazy(TLazy lazy, int stIncl, int mid, int edExcl);
+
+        protected abstract TElement MergeElement(TElement l, TElement r);
     }
 }

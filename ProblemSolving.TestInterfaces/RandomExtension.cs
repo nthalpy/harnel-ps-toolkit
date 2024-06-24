@@ -17,12 +17,15 @@ namespace ProblemSolving.Templates.TestInterfaces
             return vals[rd.Next(0, vals.Length)];
         }
 
-        public static (int stIncl, int edExcl) NextRange(this Random rd, int maxEdExcl)
+        public static (int stIncl, int edExcl) NextRange(this Random rd, int size)
         {
-            var stIncl = rd.Next(0, maxEdExcl);
-            var edExcl = 1 + rd.Next(stIncl, maxEdExcl);
+            var stIncl = rd.Next(0, size);
+            var edIncl = rd.Next(0, size);
 
-            return (stIncl, edExcl);
+            if (stIncl > edIncl)
+                (stIncl, edIncl) = (edIncl, stIncl);
+
+            return (stIncl, edIncl + 1);
         }
     }
 }

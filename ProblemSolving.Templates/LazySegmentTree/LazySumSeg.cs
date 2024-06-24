@@ -14,7 +14,7 @@
 
         protected override long CreateLazy(int lIncl, int rExcl, long val)
         {
-            return (rExcl - lIncl) * val;
+            return val;
         }
 
         protected override long MergeElement(long l, long r)
@@ -29,17 +29,7 @@
 
         protected override (long left, long right) SplitLazy(long lazy, int stIncl, int mid, int edExcl)
         {
-            return (lazy / 2, lazy / 2);
-        }
-
-        protected override long UpdatePointElement(long element, long val)
-        {
-            return element + val;
-        }
-
-        protected override long UpdateRangeElement(int stIncl, int edExcl, long element, long val)
-        {
-            return element + (edExcl - stIncl) * val;
+            return (lazy, lazy);
         }
     }
 }
