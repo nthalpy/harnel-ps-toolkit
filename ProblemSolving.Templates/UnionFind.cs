@@ -43,13 +43,16 @@ namespace ProblemSolving.Templates
             return root;
         }
 
-        public void Union(int l, int r)
+        /// <summary>
+        /// Returns false when two node is already in same disjoint set, and nothing happened.
+        /// </summary>
+        public bool TryUnion(int l, int r)
         {
             var leftRoot = Find(l);
             var rightRoot = Find(r);
 
             if (leftRoot == rightRoot)
-                return;
+                return false;
 
             if (_rank[leftRoot] < _rank[rightRoot])
             {
@@ -61,6 +64,8 @@ namespace ProblemSolving.Templates
                 _set[rightRoot] = leftRoot;
                 _rank[leftRoot] += _rank[rightRoot];
             }
+
+            return true;
         }
     }
 }
