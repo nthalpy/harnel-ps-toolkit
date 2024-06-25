@@ -1,4 +1,4 @@
-﻿using ProblemSolving.Templates.LazySegmentTree;
+﻿using ProblemSolving.Templates.LazySegmentTree.Impl;
 
 namespace ProblemSolving.TestInterfaces.RangeUpdateRangeQuery
 {

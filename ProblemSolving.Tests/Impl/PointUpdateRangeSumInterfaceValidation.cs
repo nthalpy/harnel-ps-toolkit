@@ -20,33 +20,15 @@ namespace ProblemSolving.Templates.Tests.Impl
         }
 
         [Test]
-        public void SumSegPointUpdateRangeSum([Range(1, 100)] int randomSeed)
+        public void NonGenericSumSegPointUpdateRangeSum([Range(1, 100)] int randomSeed)
             => Validate(
                 Fuzz(new NaivePointUpdateRangeSum(), randomSeed),
-                Fuzz(new SumSegPointUpdateRangeSum(), randomSeed));
+                Fuzz(new NonGenericSumSegPointUpdateRangeSum(), randomSeed));
 
         [Test]
-        public void OldGroupGenericSumSegPointUpdateRangeSum([Range(1, 100)] int randomSeed)
+        public void SealedSumSegPointUpdateRangeSum([Range(1, 100)] int randomSeed)
             => Validate(
                 Fuzz(new NaivePointUpdateRangeSum(), randomSeed),
-                Fuzz(new OldGroupGenericSumSegPointUpdateRangeSum(), randomSeed));
-
-        [Test]
-        public void GroupGenericSumSegPointUpdateRangeSum([Range(1, 100)] int randomSeed)
-            => Validate(
-                Fuzz(new NaivePointUpdateRangeSum(), randomSeed),
-                Fuzz(new GroupGenericSumSegPointUpdateRangeSum(), randomSeed));
-
-        [Test]
-        public void OldGenericSumSegPointUpdateRangeSum([Range(1, 100)] int randomSeed)
-            => Validate(
-                Fuzz(new NaivePointUpdateRangeSum(), randomSeed),
-                Fuzz(new OldGenericSumSegPointUpdateRangeSum(), randomSeed));
-
-        [Test]
-        public void GenericSumSegPointUpdateRangeSum([Range(1, 100)] int randomSeed)
-            => Validate(
-                Fuzz(new NaivePointUpdateRangeSum(), randomSeed),
-                Fuzz(new GenericSumSegPointUpdateRangeSum(), randomSeed));
+                Fuzz(new SealedSumSegPointUpdateRangeSum(), randomSeed));
     }
 }

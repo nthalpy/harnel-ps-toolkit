@@ -9,18 +9,15 @@ namespace ProblemSolving.Templates.SegmentTree
     /// Generic segment tree w/ semigroup operations.
     /// </summary>
     [IncludeIfReferenced]
-    public class SemigroupSegTree<TElement, TUpdate, TOperation>
+    public abstract class SemigroupSegTree<TElement, TUpdate>
         where TElement : struct
         where TUpdate : struct
-        where TOperation : struct, ISemigroupSegOp<TElement, TUpdate>
     {
-        private TElement[] _tree;
-        private int _leafMask;
+        protected TElement[] _tree;
+        protected int _leafMask;
 
         private List<int> _lefts;
         private List<int> _rights;
-
-        private TOperation _op = default;
 
         public SemigroupSegTree(int size)
         {
@@ -42,24 +39,22 @@ namespace ProblemSolving.Templates.SegmentTree
                 _tree[_leafMask | idx] = init[idx];
 
             for (var idx = _leafMask - 1; idx > 0; idx--)
-                _tree[idx] = _op.Merge(_tree[2 * idx], _tree[2 * idx + 1]);
+                _tree[idx] = Merge(_tree[2 * idx], _tree[2 * idx + 1]);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Update(int index, TUpdate val)
         {
             var curr = _leafMask | index;
-            _tree[curr] = _op.UpdateElement(_tree[curr], val);
+            _tree[curr] = UpdateElement(_tree[curr], val);
             curr >>= 1;
 
             while (curr != 0)
             {
-                _tree[curr] = _op.Merge(_tree[2 * curr], _tree[2 * curr + 1]);
+                _tree[curr] = Merge(_tree[2 * curr], _tree[2 * curr + 1]);
                 curr >>= 1;
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public TElement Range(int stIncl, int edExcl)
         {
             var leftNode = _leafMask | stIncl;
@@ -84,9 +79,12 @@ namespace ProblemSolving.Templates.SegmentTree
 
             var aggregated = _tree[_lefts[0]];
             foreach (var idx in _lefts.Skip(1))
-                aggregated = _op.Merge(aggregated, _tree[idx]);
+                aggregated = Merge(aggregated, _tree[idx]);
 
             return aggregated;
         }
+
+        protected abstract TElement UpdateElement(TElement elem, TUpdate update);
+        protected abstract TElement Merge(TElement l, TElement r);
     }
 }

@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace ProblemSolving.Templates.TestInterfaces.PointUpdateRangeQuery
 {
-    public class SumSegPointUpdateRangeSum : PointUpdateRangeSumInterface
+    public class NonGenericSumSegPointUpdateRangeSum : PointUpdateRangeSumInterface
     {
         [IncludeIfReferenced]
         public sealed class SumSeg
