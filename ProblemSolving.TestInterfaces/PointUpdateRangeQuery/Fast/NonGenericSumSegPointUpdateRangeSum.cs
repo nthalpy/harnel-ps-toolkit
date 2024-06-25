@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using ProblemSolving.Templates;
+using ProblemSolving.Templates.TestInterfaces.PointUpdateRangeQuery;
+using System.Collections.Generic;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 
-namespace ProblemSolving.Templates.TestInterfaces.PointUpdateRangeQuery
+namespace ProblemSolving.TestInterfaces.PointUpdateRangeQuery.Fast
 {
     public class NonGenericSumSegPointUpdateRangeSum : PointUpdateRangeSumInterface
     {

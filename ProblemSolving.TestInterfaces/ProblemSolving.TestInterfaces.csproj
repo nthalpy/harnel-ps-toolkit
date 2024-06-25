@@ -3,7 +3,13 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ac-library-csharp" Version="3.9.0" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ProblemSolving\ProblemSolving.csproj" />

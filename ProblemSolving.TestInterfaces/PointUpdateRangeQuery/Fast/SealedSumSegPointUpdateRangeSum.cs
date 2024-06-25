@@ -1,9 +1,7 @@
 ﻿using ProblemSolving.Templates.SegmentTree;
-using System.Collections.Generic;
-using System.Numerics;
-using System.Runtime.CompilerServices;
+using ProblemSolving.Templates.TestInterfaces.PointUpdateRangeQuery;
 
-namespace ProblemSolving.Templates.TestInterfaces.PointUpdateRangeQuery
+namespace ProblemSolving.TestInterfaces.PointUpdateRangeQuery.Fast
 {
     public class SealedSumSegPointUpdateRangeSum : PointUpdateRangeSumInterface
     {

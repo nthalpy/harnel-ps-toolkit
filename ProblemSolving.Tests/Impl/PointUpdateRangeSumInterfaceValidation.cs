@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using ProblemSolving.Templates.TestInterfaces.PointUpdateRangeQuery;
+using ProblemSolving.TestInterfaces.PointUpdateRangeQuery.Fast;
 using System;
 using System.Collections.Generic;
 using System.Linq;
