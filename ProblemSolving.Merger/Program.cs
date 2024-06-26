@@ -81,9 +81,14 @@ namespace ProblemSolving.Templates.Merger
                         if (resolved != null && methodDefInqueue.Add(resolved))
                             methodDefQueue.Enqueue(resolved);
                     }
-                    else if (inst.Operand is TypeReference typeRef)
+                    if (inst.Operand is TypeReference typeRef)
                     {
                         EnqueueTypeDefs(typeRef);
+                    }
+                    if (inst.Operand is MemberReference memberRef)
+                    {
+                        if (memberRef.DeclaringType != null)
+                            EnqueueTypeDefs(memberRef.DeclaringType);
                     }
                 }
             }

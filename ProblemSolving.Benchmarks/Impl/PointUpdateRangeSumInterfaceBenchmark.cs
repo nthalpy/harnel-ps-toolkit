@@ -6,15 +6,15 @@ using System;
 
 namespace ProblemSolving.Templates.Benchmarks.Impl
 {
-    [LongRunJob(RuntimeMoniker.Net60)]
-    [LongRunJob(RuntimeMoniker.Net70)]
-    [LongRunJob(RuntimeMoniker.Net80)]
+    [VeryLongRunJob(RuntimeMoniker.Net60)]
+    [VeryLongRunJob(RuntimeMoniker.Net70)]
+    [VeryLongRunJob(RuntimeMoniker.Net80)]
     public partial class PointUpdateRangeSumInterfaceBenchmark : Benchmark<PointUpdateRangeSumInterface>
     {
-        [Params(1_000_000/*, 2_000_000, 5_000_000*/)]
+        [Params(100000/*, 2_000_000, 5_000_000*/)]
         public int SegTreeSize;
 
-        [Params(1_000_000/*, 2_000_000, 5_000_000*/)]
+        [Params(100000/*, 2_000_000, 5_000_000*/)]
         public int QueryCount;
 
         [IterationSetup]
@@ -31,16 +31,13 @@ namespace ProblemSolving.Templates.Benchmarks.Impl
         [Benchmark]
         public void ACLStyleSumSegPointUpdateRangeSum() => Fuzz(new ACLStyleSumSegPointUpdateRangeSum());
 
-        //[Benchmark]
-        //public void ACLSumSegPointUpdateRangeSum() => Fuzz(new ACLSumSegPointUpdateRangeSum());
-
-        //[Benchmark]
-        //public void NonGenericSumSegPointUpdateRangeSum() => Fuzz(new NonGenericSumSegPointUpdateRangeSum());
-
-        //[Benchmark]
-        //public void NonSealedSumSegPointUpdateRangeSum() => Fuzz(new NonSealedSumSegPointUpdateRangeSum());
-
         [Benchmark(Baseline = true)]
+        public void NonGenericSumSegPointUpdateRangeSum() => Fuzz(new NonGenericSumSegPointUpdateRangeSum());
+
+        [Benchmark]
+        public void NonSealedSumSegPointUpdateRangeSum() => Fuzz(new NonSealedSumSegPointUpdateRangeSum());
+
+        [Benchmark]
         public void SealedSumSegPointUpdateRangeSum() => Fuzz(new SealedSumSegPointUpdateRangeSum());
     }
 }

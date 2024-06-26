@@ -2,7 +2,6 @@
 using ProblemSolving.Templates.TestInterfaces.PointUpdateRangeQuery;
 using System.Collections.Generic;
 using System.Numerics;
-using System.Runtime.CompilerServices;
 
 namespace ProblemSolving.TestInterfaces.PointUpdateRangeQuery.Fast
 {
@@ -31,7 +30,6 @@ namespace ProblemSolving.TestInterfaces.PointUpdateRangeQuery.Fast
                     _tree[idx] = _tree[2 * idx] + _tree[2 * idx + 1];
             }
 
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void Update(int index, long val)
             {
                 var curr = _leafMask | index;
@@ -40,17 +38,17 @@ namespace ProblemSolving.TestInterfaces.PointUpdateRangeQuery.Fast
                 while (curr != 0)
                 {
                     _tree[curr] += diff;
-                    curr /= 2;
+                    curr >>= 1;
                 }
             }
 
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public long Range(int stIncl, int edExcl)
             {
                 var leftNode = _leafMask | stIncl;
-                var rightNode = _leafMask | edExcl - 1;
+                var rightNode = _leafMask | (edExcl - 1);
 
                 var aggregated = 0L;
+
                 while (leftNode <= rightNode)
                 {
                     if ((leftNode & 1) == 1)
