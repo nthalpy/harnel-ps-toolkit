@@ -7,7 +7,6 @@ namespace ProblemSolving.TestInterfaces.PointUpdateRangeQuery.Fast
 {
     public class NonGenericSumSegPointUpdateRangeSum : PointUpdateRangeSumInterface
     {
-        [IncludeIfReferenced]
         public sealed class SumSeg
         {
             private long[] _tree;
