@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 
 namespace ProblemSolving.Templates.LazySegmentTree
@@ -10,10 +10,11 @@ namespace ProblemSolving.Templates.LazySegmentTree
         where TUpdate : struct
         where TLazy : struct
     {
-        private TElement[] _tree;
-        private TLazy?[] _lazy;
+        protected TElement[] _tree;
+        protected TLazy?[] _lazy;
 
-        private int _leafMask;
+        protected int _leafMask;
+        private List<(int st, int idx)> _mergeIndices;
 
         public GenericLazySeg(int size)
         {
@@ -22,6 +23,7 @@ namespace ProblemSolving.Templates.LazySegmentTree
 
             _tree = new TElement[treeSize];
             _lazy = new TLazy?[treeSize];
+            _mergeIndices = new List<(int st, int idx)>();
         }
 
         public void Init(IList<TElement> init)
@@ -74,7 +76,7 @@ namespace ProblemSolving.Templates.LazySegmentTree
             var q = new Queue<(int idx, int lIncl, int rExcl)>();
             q.Enqueue((1, 0, _leafMask));
 
-            var result = default(TElement?);
+            _mergeIndices.Clear();
 
             while (q.TryDequeue(out var state))
             {
@@ -85,11 +87,7 @@ namespace ProblemSolving.Templates.LazySegmentTree
                 ApplyAndPropagate(idx, lIncl, rExcl);
                 if (stIncl <= lIncl && rExcl <= edExcl)
                 {
-                    if (result == null)
-                        result = _tree[idx];
-                    else
-                        result = MergeElement(result.Value, _tree[idx]);
-
+                    _mergeIndices.Add((lIncl, idx));
                     continue;
                 }
 
@@ -98,10 +96,12 @@ namespace ProblemSolving.Templates.LazySegmentTree
                 q.Enqueue((2 * idx + 1, mid, rExcl));
             }
 
-            if (result == null)
-                throw new InvalidOperationException();
+            _mergeIndices.Sort();
+            var agg = _tree[_mergeIndices[0].idx];
+            foreach (var (_, idx) in _mergeIndices.Skip(1))
+                agg = MergeElement(agg, _tree[idx]);
 
-            return result.Value;
+            return agg;
         }
 
         private void ApplyAndPropagate(int idx, int stIncl, int edExcl)

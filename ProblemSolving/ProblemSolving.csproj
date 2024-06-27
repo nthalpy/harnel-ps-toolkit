@@ -16,7 +16,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ProblemSolving.Templates\ProblemSolving.Templates.csproj" />
-    <ProjectReference Include="..\ProblemSolving.TestInterfaces\ProblemSolving.TestInterfaces.csproj" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
