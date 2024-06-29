@@ -24,7 +24,7 @@ namespace ProblemSolving.TestInterfaces.PointUpdateRangeQuery.Fast
             _seg = new SumSeg(size);
         }
 
-        public override void PointUpdate(int index, long val) => _seg.Update(index, val);
+        public override void PointUpdate(int index, long val) => _seg.UpdateValue(index, val);
         public override long RangeSum(int stIncl, int edExcl) => _seg.Range(stIncl, edExcl);
     }
 }

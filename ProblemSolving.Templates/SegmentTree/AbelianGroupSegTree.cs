@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Numerics;
 
 namespace ProblemSolving.Templates.SegmentTree
@@ -15,12 +16,15 @@ namespace ProblemSolving.Templates.SegmentTree
         protected TElement[] _tree;
         protected int _leafMask;
 
+        public int Size { get; private set; }
+
         public AbelianGroupSegTree(int size)
         {
             _leafMask = (int)BitOperations.RoundUpToPowerOf2((uint)size);
             var treeSize = _leafMask << 1;
 
             _tree = new TElement[treeSize];
+            Size = size;
         }
 
         public TElement AllRange => _tree[1];
@@ -28,17 +32,26 @@ namespace ProblemSolving.Templates.SegmentTree
 
         public void Init(IList<TElement> init)
         {
-            for (var idx = 0; idx < init.Count; idx++)
+            if (init.Count != Size)
+                throw new ArgumentException();
+
+            for (var idx = 0; idx < Size; idx++)
                 _tree[_leafMask | idx] = init[idx];
 
             for (var idx = _leafMask - 1; idx > 0; idx--)
                 _tree[idx] = Merge(_tree[2 * idx], _tree[2 * idx + 1]);
         }
 
-        public void Update(int index, TUpdate val)
+        public void UpdateValue(int index, TUpdate val)
         {
             var curr = _leafMask | index;
             var diff = CreateDiff(_tree[curr], val);
+
+            UpdateDiff(index, diff);
+        }
+        public void UpdateDiff(int index, TDiff diff)
+        {
+            var curr = _leafMask | index;
 
             while (curr != 0)
             {
@@ -49,6 +62,9 @@ namespace ProblemSolving.Templates.SegmentTree
 
         public TElement Range(int stIncl, int edExcl)
         {
+            if (stIncl >= _leafMask || edExcl >= _leafMask)
+                throw new ArgumentOutOfRangeException();
+
             var leftNode = _leafMask | stIncl;
             var rightNode = _leafMask | (edExcl - 1);
 

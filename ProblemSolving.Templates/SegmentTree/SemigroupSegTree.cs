@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 
@@ -56,6 +57,9 @@ namespace ProblemSolving.Templates.SegmentTree
 
         public TElement Range(int stIncl, int edExcl)
         {
+            if (stIncl >= _leafMask || edExcl >= _leafMask)
+                throw new ArgumentOutOfRangeException();
+
             var leftNode = _leafMask | stIncl;
             var rightNode = _leafMask | (edExcl - 1);
 

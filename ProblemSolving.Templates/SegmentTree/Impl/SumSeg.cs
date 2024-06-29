@@ -1,5 +1,6 @@
 ﻿namespace ProblemSolving.Templates.SegmentTree.Impl
 {
+    [IncludeIfReferenced]
     public sealed class SumSeg : AbelianGroupSegTree<long, long, long>
     {
         public SumSeg(int size) : base(size)
