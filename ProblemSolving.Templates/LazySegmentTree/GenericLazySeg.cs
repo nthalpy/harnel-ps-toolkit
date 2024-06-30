@@ -14,6 +14,8 @@ namespace ProblemSolving.Templates.LazySegmentTree
         protected TLazy?[] _lazy;
 
         protected int _leafMask;
+
+        private List<int> _path;
         private List<(int st, int idx)> _mergeIndices;
 
         public GenericLazySeg(int size)
@@ -23,6 +25,8 @@ namespace ProblemSolving.Templates.LazySegmentTree
 
             _tree = new TElement[treeSize];
             _lazy = new TLazy?[treeSize];
+
+            _path = new List<int>();
             _mergeIndices = new List<(int st, int idx)>();
         }
 

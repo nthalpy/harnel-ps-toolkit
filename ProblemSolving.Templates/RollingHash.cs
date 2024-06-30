@@ -9,6 +9,8 @@ namespace ProblemSolving.Templates
     public class RollingHash<T>
         where T : struct
     {
+        public const long LargePrime1 = 116694184624691L;
+
         private IList<T> _seq;
         private long _mult;
         private long _mod;
@@ -39,11 +41,11 @@ namespace ProblemSolving.Templates
             var e = _seq[idx];
 
             if (typeof(T) == typeof(Char))
-                return Unsafe.As<T, Char>(ref e);
+                return 1 + (long)Unsafe.As<T, Char>(ref e);
             else if (typeof(T) == typeof(int))
-                return Unsafe.As<T, int>(ref e);
+                return 1 + (long)Unsafe.As<T, int>(ref e);
             else if (typeof(T) == typeof(long))
-                return Unsafe.As<T, long>(ref e);
+                return 1 + Unsafe.As<T, long>(ref e);
             else
                 throw new NotImplementedException();
         }
