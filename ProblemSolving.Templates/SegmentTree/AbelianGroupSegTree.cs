@@ -62,7 +62,7 @@ namespace ProblemSolving.Templates.SegmentTree
 
         public TElement Range(int stIncl, int edExcl)
         {
-            if (stIncl >= _leafMask || edExcl >= _leafMask)
+            if (stIncl >= _leafMask || edExcl > _leafMask)
                 throw new ArgumentOutOfRangeException();
 
             var leftNode = _leafMask | stIncl;

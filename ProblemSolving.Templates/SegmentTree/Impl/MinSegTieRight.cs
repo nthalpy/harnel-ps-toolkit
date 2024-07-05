@@ -2,6 +2,7 @@
 
 namespace ProblemSolving.Templates.SegmentTree.Impl
 {
+    [IncludeIfReferenced]
     public class MinSegTieRight : SemigroupSegTree<(int idx, long val), long>
     {
         public MinSegTieRight(int size) : base(size)

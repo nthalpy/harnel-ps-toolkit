@@ -25,5 +25,11 @@ namespace ProblemSolving.Templates.Tests.Impl
             => Validate(
                 Fuzz(new NaivePointUpdateRangeSum(), randomSeed),
                 Fuzz(new NonGenericSumSegPointUpdateRangeSum(), randomSeed));
+
+        [Test]
+        public void DynamicSealedSumSegPointUpdateRangeSum([Range(1, 100)] int randomSeed)
+            => Validate(
+                Fuzz(new NaivePointUpdateRangeSum(), randomSeed),
+                Fuzz(new DynamicSealedSumSegPointUpdateRangeSum(), randomSeed));
     }
 }

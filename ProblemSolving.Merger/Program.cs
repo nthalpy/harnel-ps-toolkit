@@ -147,17 +147,31 @@ namespace ProblemSolving.Templates.Merger
 
                 comp = comp.WithUsings(new SyntaxList<UsingDirectiveSyntax>());
 
-                foreach (var typeDecl in comp.DescendantNodes().OfType<TypeDeclarationSyntax>())
+                while (true)
                 {
-                    foreach (var attrList in typeDecl.AttributeLists)
+                    var changed = false;
+
+                    foreach (var typeDecl in comp.DescendantNodes().OfType<TypeDeclarationSyntax>())
                     {
-                        if (attrList.Attributes.Any(attr => attr.Name.ToFullString() == "IncludeIfReferenced"))
+                        foreach (var attrList in typeDecl.AttributeLists)
                         {
-                            comp = comp.RemoveNode(attrList, SyntaxRemoveOptions.KeepNoTrivia);
-                            if (comp == null)
-                                throw new InvalidOperationException();
+                            if (attrList.Attributes.Any(attr => attr.Name.ToFullString() == "IncludeIfReferenced"))
+                            {
+                                comp = comp.RemoveNode(attrList, SyntaxRemoveOptions.KeepNoTrivia);
+                                if (comp == null)
+                                    throw new InvalidOperationException();
+
+                                changed = true;
+                                break;
+                            }
                         }
+
+                        if (changed)
+                            break;
                     }
+
+                    if (!changed)
+                        break;
                 }
 
                 sb.AppendLine(comp.ToFullString());

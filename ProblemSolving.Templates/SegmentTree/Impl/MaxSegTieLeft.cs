@@ -2,6 +2,7 @@
 
 namespace ProblemSolving.Templates.SegmentTree.Impl
 {
+    [IncludeIfReferenced]
     public class MaxSegTieLeft : SemigroupSegTree<(int idx, long val), long>
     {
         public MaxSegTieLeft(int size) : base(size)
