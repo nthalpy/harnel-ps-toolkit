@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ProblemSolving.Templates.Tests.Impl
+namespace ProblemSolving.Tests.Impl
 {
     public partial class RangeUpdateRangeSumInterfaceValidation : Validation<RangeUpdateRangeSumInterface, List<long>>
     {

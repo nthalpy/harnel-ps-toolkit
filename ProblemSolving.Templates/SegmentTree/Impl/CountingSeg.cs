@@ -12,7 +12,7 @@
         /// </summary>
         public int? KthElement(long k)
         {
-            if (AllRange < k)
+            if (Range(0, Size) < k)
                 return null;
 
             k++;

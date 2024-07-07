@@ -1,4 +1,4 @@
-﻿namespace ProblemSolving.Templates.Tests
+﻿namespace ProblemSolving.Tests
 {
     public abstract class Validation<TInterface, TResult>
     {

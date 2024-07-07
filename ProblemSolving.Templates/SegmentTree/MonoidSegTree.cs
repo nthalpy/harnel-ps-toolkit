@@ -9,17 +9,19 @@ namespace ProblemSolving.Templates.SegmentTree
     /// Generic segment tree w/ semigroup operations.
     /// </summary>
     [IncludeIfReferenced]
-    public abstract class SemigroupSegTree<TElement, TUpdate>
+    public abstract class MonoidSegTree<TElement, TUpdate>
         where TElement : struct
         where TUpdate : struct
     {
         protected TElement[] _tree;
         protected int _leafMask;
 
+        public int Size { get; private set; }
+
         private List<int> _lefts;
         private List<int> _rights;
 
-        public SemigroupSegTree(int size)
+        public MonoidSegTree(int size)
         {
             _leafMask = (int)BitOperations.RoundUpToPowerOf2((uint)size);
             var treeSize = _leafMask << 1;
@@ -28,6 +30,7 @@ namespace ProblemSolving.Templates.SegmentTree
             _rights = new List<int>();
 
             _tree = new TElement[treeSize];
+            Size = size;
         }
 
         public TElement AllRange => _tree[1];
@@ -35,8 +38,11 @@ namespace ProblemSolving.Templates.SegmentTree
 
         public void Init(IList<TElement> init)
         {
+            var id = Identity();
             for (var idx = 0; idx < init.Count; idx++)
                 _tree[_leafMask | idx] = init[idx];
+            for (var idx = init.Count; idx < _leafMask; idx++)
+                _tree[_leafMask | idx] = id;
 
             for (var idx = _leafMask - 1; idx > 0; idx--)
                 _tree[idx] = Merge(_tree[2 * idx], _tree[2 * idx + 1]);
@@ -57,7 +63,7 @@ namespace ProblemSolving.Templates.SegmentTree
 
         public TElement Range(int stIncl, int edExcl)
         {
-            if (stIncl >= _leafMask || edExcl >= _leafMask)
+            if (stIncl >= _leafMask || edExcl > _leafMask)
                 throw new ArgumentOutOfRangeException();
 
             var leftNode = _leafMask | stIncl;
@@ -87,6 +93,7 @@ namespace ProblemSolving.Templates.SegmentTree
             return aggregated;
         }
 
+        protected abstract TElement Identity();
         protected abstract TElement UpdateElement(TElement elem, TUpdate update);
         protected abstract TElement Merge(TElement l, TElement r);
     }

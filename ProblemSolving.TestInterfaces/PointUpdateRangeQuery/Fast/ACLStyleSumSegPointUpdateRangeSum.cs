@@ -33,7 +33,6 @@ namespace ProblemSolving.TestInterfaces.PointUpdateRangeQuery.Fast
                 _tree = new TElement[treeSize];
             }
 
-            public TElement AllRange => _tree[1];
             public TElement ElementAt(int idx) => _tree[_leafMask | idx];
 
             public void Init(IList<TElement> init)
