@@ -35,21 +35,25 @@ namespace ProblemSolving.Templates.Merger
 
             void EnqueueTypeDefs(TypeReference typeRef)
             {
-                var resolved = typeRef.Resolve();
-                if (resolved == null)
+                var typeDef = typeRef.Resolve();
+                if (typeDef == null)
                 {
                     Console.WriteLine($"Unable to resolve {typeRef.FullName}");
                     return;
                 }
 
+                foreach (var methodDef in typeDef.Methods)
+                    if (methodDefInqueue.Add(methodDef))
+                        methodDefQueue.Enqueue(methodDef);
+
                 // Already handled
-                if (!referencedTypes.Add(resolved))
+                if (!referencedTypes.Add(typeDef))
                     return;
 
-                if (resolved.BaseType != null)
+                if (typeDef.BaseType != null)
                     EnqueueTypeDefs(typeRef);
 
-                foreach (var interfaceRef in resolved.Interfaces)
+                foreach (var interfaceRef in typeDef.Interfaces)
                     EnqueueTypeDefs(interfaceRef.InterfaceType);
 
                 if (typeRef is GenericInstanceType genTypeRef)
@@ -70,6 +74,9 @@ namespace ProblemSolving.Templates.Merger
                     Console.WriteLine($"{curr.FullName} has no body");
                     continue;
                 }
+
+                foreach (var param in curr.Parameters)
+                    EnqueueTypeDefs(param.ParameterType);
 
                 foreach (var inst in curr.Body.Instructions)
                 {
@@ -93,7 +100,7 @@ namespace ProblemSolving.Templates.Merger
                 }
             }
 
-            var mergeTargets = new List<string>();
+            var mergeTargets = new HashSet<string>();
             mergeTargets.Add(option.EntrypointPath);
 
             foreach (var type in referencedTypes)
@@ -123,18 +130,28 @@ namespace ProblemSolving.Templates.Merger
             }
 
             var usings = new SortedSet<string>();
+            var usingAlias = new SortedSet<(string alias, string ns)>();
+
             foreach (var tree in trees)
             {
                 var comp = tree.GetRoot() as CompilationUnitSyntax;
                 if (comp == null)
                     throw new InvalidOperationException();
 
-                usings.UnionWith(comp.Usings.Select(u => u.Name.ToFullString()));
+                foreach (var u in comp.Usings)
+                {
+                    if (u.Alias == null)
+                        usings.Add(u.Name.ToFullString().Trim());
+                    else
+                        usingAlias.Add((u.Alias.Name.ToFullString().Trim(), u.Name.ToFullString().Trim()));
+                }
             }
 
             var sb = new StringBuilder();
             foreach (var u in usings)
                 sb.AppendLine($"using {u};");
+            foreach (var (a,u) in usingAlias)
+                sb.AppendLine($"using {a} = {u};");
 
             foreach (var u in usings)
                 sb.AppendLine($"namespace {u} {{}}");
