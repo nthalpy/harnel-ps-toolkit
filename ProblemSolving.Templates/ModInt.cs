@@ -24,6 +24,7 @@ namespace ProblemSolving.Templates
         where TOp : struct, IModIntInterface
     {
         public long V;
+        public long Mod => default(TOp).GetMod();
 
         public ModInt()
             : this(0)
@@ -35,7 +36,7 @@ namespace ProblemSolving.Templates
 
             if (v < 0)
                 v = (-v + mod - 1) / mod * mod;
-            else
+            else if (v >= mod)
                 v = v % mod;
 
             V = v;

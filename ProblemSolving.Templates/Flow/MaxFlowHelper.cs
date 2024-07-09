@@ -19,10 +19,10 @@ namespace ProblemSolving.Templates.MaxFlow
 
             public FlowEdge(int dst, int opp, long capacity)
             {
-                this.Dst = dst;
-                this.Opp = opp;
-                this.Flow = 0;
-                this.Capacity = capacity;
+                Dst = dst;
+                Opp = opp;
+                Flow = 0;
+                Capacity = capacity;
             }
 
             public bool CanFlow => Flow < Capacity;
@@ -48,7 +48,7 @@ namespace ProblemSolving.Templates.MaxFlow
 
             return v;
         }
-        public void AddEdge(TNode src, TNode dst, long forwardCap, long backwardCap)
+        public void AddEdge(TNode src, TNode dst, long capacity)
         {
             var srcId = GetId(src);
             var dstId = GetId(dst);
@@ -56,15 +56,20 @@ namespace ProblemSolving.Templates.MaxFlow
             var srcopp = _graph[dstId].Count;
             var dstopp = _graph[srcId].Count;
 
-            _graph[srcId].Add(new(dstId, srcopp, forwardCap));
-            _graph[dstId].Add(new(srcId, dstopp, backwardCap));
+            _graph[srcId].Add(new(dstId, srcopp, capacity));
+            _graph[dstId].Add(new(srcId, dstopp, 0));
         }
 
-        public long FindMaxFlow(TNode source, TNode destination)
+        public long FindMaxFlow(TNode source, TNode sink)
         {
             var sourceId = GetId(source);
-            var destinationId = GetId(destination);
+            var sinkId = GetId(sink);
             var flow = 0L;
+
+            var sourceg = _graph[sourceId];
+            var sourcec = sourceg.Count;
+            for (var idx = 0; idx < sourcec; idx++)
+                flow += sourceg[idx].Flow;
 
             var n = _graph.Count;
             var levelGraph = new int[n];
@@ -72,11 +77,11 @@ namespace ProblemSolving.Templates.MaxFlow
             while (true)
             {
                 var flowOccured = false;
-                RebuildLevelGraph(sourceId, destinationId, levelGraph);
+                RebuildLevelGraph(sourceId, sinkId, levelGraph);
 
                 while (true)
                 {
-                    var f = MakeFlow(sourceId, destinationId, levelGraph, Int64.MaxValue);
+                    var f = MakeFlow(sourceId, sinkId, levelGraph, Int64.MaxValue);
                     if (f == 0)
                         break;
 
@@ -130,7 +135,7 @@ namespace ProblemSolving.Templates.MaxFlow
             return 0;
         }
 
-        private void RebuildLevelGraph(int source, int destination, int[] levelGraph)
+        private void RebuildLevelGraph(int source, int sink, int[] levelGraph)
         {
             var q = new Queue<(int pos, int level)>();
             q.Enqueue((source, 0));
@@ -142,7 +147,7 @@ namespace ProblemSolving.Templates.MaxFlow
             {
                 var (pos, level) = state;
 
-                if (pos == destination)
+                if (pos == sink)
                     continue;
 
                 var g = _graph[pos];
