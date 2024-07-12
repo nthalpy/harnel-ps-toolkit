@@ -13,7 +13,7 @@ namespace ProblemSolving.Templates.Geometry
             return new IntPoint2(x, y);
         }
 
-        public static IntPoint2 operator -(IntPoint2 to, IntPoint2 from) => new IntPoint2(to.X - from.X, to.Y - from.Y);
+        public static IntVector2 operator -(IntPoint2 to, IntPoint2 from) => new IntVector2(to.X - from.X, to.Y - from.Y);
         public static IntPoint2 operator +(IntPoint2 p, IntVector2 v) => new IntPoint2(p.X + v.DeltaX, p.Y + v.DeltaY);
     }
 }

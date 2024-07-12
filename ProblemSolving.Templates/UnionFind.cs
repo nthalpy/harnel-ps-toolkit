@@ -43,6 +43,11 @@ namespace ProblemSolving.Templates
             return root;
         }
 
+        public int Rank(int v)
+        {
+            return _rank[Find(v)];
+        }
+
         /// <summary>
         /// Returns false when two node is already in same disjoint set, and nothing happened.
         /// </summary>

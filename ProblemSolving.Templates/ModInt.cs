@@ -96,5 +96,20 @@ namespace ProblemSolving.Templates
 
         public override int GetHashCode() => V.GetHashCode();
         public override string ToString() => V.ToString();
+
+        public static ModInt<TOp> Pow(ModInt<TOp> p, long m)
+        {
+            var rv = (ModInt<TOp>)1;
+            while (m > 0)
+            {
+                if ((m & 1) == 1)
+                    rv *= p;
+
+                p *= p;
+                m >>= 1;
+            }
+
+            return rv;
+        }
     }
 }
