@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace ProblemSolving.Templates.Geometry
 {
     [IncludeIfReferenced]
-    public class AngleComparer : IComparer<IntPoint2>
+    public class AngleComparer : IComparer<IntPoint2>, IComparer<IntVector2>
     {
         public readonly static AngleComparer CompareAngle = new AngleComparer(false);
         public readonly static AngleComparer CompareAngleThenByDistance = new AngleComparer(true);
@@ -23,7 +23,10 @@ namespace ProblemSolving.Templates.Geometry
             _tiebreakByDistance = tiebreakWithDistance;
         }
 
-        public int Compare(IntPoint2 u, IntPoint2 v)
+        public int Compare(IntPoint2 u, IntPoint2 v) => Compare(u.X, u.Y, v.X, v.Y);
+        public int Compare(IntVector2 u, IntVector2 v) => Compare(u.X, u.Y, v.X, v.Y);
+
+        public int Compare(long ux, long uy, long vx, long vy)
         {
             // y
             // ^ 4 3 2
@@ -31,17 +34,17 @@ namespace ProblemSolving.Templates.Geometry
             // | 6 7 8
             // +-----> x
 
-            var uidx = Index(u);
-            var vidx = Index(v);
+            var uidx = Index(ux, uy);
+            var vidx = Index(vx, vy);
 
             if (uidx != vidx)
                 return uidx.CompareTo(vidx);
 
-            var ccw = u.Y * v.X - u.X * v.Y;
+            var ccw = uy * vx - ux * vy;
             if (ccw == 0 && _tiebreakByDistance)
             {
-                var uxy = Math.Abs(u.X) + Math.Abs(u.Y);
-                var vxy = Math.Abs(v.X) + Math.Abs(v.Y);
+                var uxy = Math.Abs(ux) + Math.Abs(uy);
+                var vxy = Math.Abs(vx) + Math.Abs(vy);
 
                 return uxy.CompareTo(vxy);
             }
@@ -51,10 +54,10 @@ namespace ProblemSolving.Templates.Geometry
             }
         }
 
-        private int Index(IntPoint2 v)
+        private int Index(long x, long y)
         {
-            var sx = Math.Sign(v.X) + 1;
-            var sy = Math.Sign(v.Y) + 1;
+            var sx = Math.Sign(x) + 1;
+            var sy = Math.Sign(y) + 1;
             return _signToIndex[sy * 3 + sx];
         }
     }

@@ -49,7 +49,7 @@ namespace ProblemSolving.Templates
         }
 
         /// <summary>
-        /// Returns false when two node is already in same disjoint set, and nothing happened.
+        /// Returns false when two node is already in same disjoint set, and nothing happens.
         /// </summary>
         public bool TryUnion(int l, int r)
         {
