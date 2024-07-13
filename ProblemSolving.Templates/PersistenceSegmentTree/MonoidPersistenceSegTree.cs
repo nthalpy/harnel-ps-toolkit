@@ -1,14 +1,12 @@
-﻿using System.Numerics;
-
-namespace ProblemSolving.Templates.SegmentTree
+﻿namespace ProblemSolving.Templates.PersistenceSegmentTree
 {
     [IncludeIfReferenced]
-    public abstract class DynamicAbelianGroupSegTree<TElement, TUpdate, TDiff>
+    public abstract class MonoidPersistenceSegTree<TSelf, TElement, TUpdate>
+        where TSelf : MonoidPersistenceSegTree<TSelf, TElement, TUpdate>
         where TElement : struct
         where TUpdate : struct
-        where TDiff : struct
     {
-        public class Node
+        protected class Node
         {
             public long StIncl;
             public long EdExcl;
@@ -41,61 +39,64 @@ namespace ProblemSolving.Templates.SegmentTree
             public override string ToString() => $"Range [{StIncl}, {EdExcl}): {Element}";
         }
 
-        protected Node _root;
+        protected Node? _root;
         public long Size { get; protected set; }
 
-        public DynamicAbelianGroupSegTree(long size)
+        public MonoidPersistenceSegTree(long size)
         {
-            _root = new Node(0, size, Identity());
+            Size = size;
+        }
+        protected MonoidPersistenceSegTree(Node? root, long size)
+        {
+            _root = root;
             Size = size;
         }
 
-        protected Node FindOrCreateNode(int idx)
+        public TSelf UpdateValue(int idx, TUpdate update)
         {
-            var curr = _root;
+            var id = Identity();
+            var newroot = new Node(0, Size, id);
 
-            while (curr.StIncl != idx || curr.EdExcl != idx + 1)
+            var curr = _root;
+            var newcurr = newroot;
+
+            while (newcurr.StIncl != idx || newcurr.EdExcl != idx + 1)
             {
-                var mid = (curr.StIncl + curr.EdExcl) / 2;
+                var mid = (newcurr.StIncl + newcurr.EdExcl) / 2;
                 if (idx < mid)
                 {
-                    if (curr.Left == null)
-                        curr.MakeLeftNode(Identity());
+                    if (newcurr.Left == null)
+                        newcurr.MakeLeftNode(id);
 
-                    curr = curr.Left!;
+                    newcurr.Right = curr?.Right;
+                    curr = curr?.Left;
+                    newcurr = newcurr.Left!;
                 }
                 else
                 {
-                    if (curr.Right == null)
-                        curr.MakeRightNode(Identity());
+                    if (newcurr.Right == null)
+                        newcurr.MakeRightNode(id);
 
-                    curr = curr.Right!;
+                    newcurr.Left = curr?.Left;
+                    curr = curr?.Right;
+                    newcurr = newcurr.Right!;
                 }
             }
 
-            return curr;
-        }
-
-        public void UpdateValue(int idx, TUpdate val)
-        {
-            var curr = FindOrCreateNode(idx);
-
-            var diff = CreateDiff(curr.Element, val);
-            while (curr != null)
+            newcurr.Element = UpdateElement((curr?.Element ?? Identity()), update);
+            while (newcurr != null)
             {
-                curr.Element = ApplyDiff(curr.Element, diff);
-                curr = curr.Parent;
-            }
-        }
-        public void UpdateDiff(int idx, TDiff diff)
-        {
-            var curr = FindOrCreateNode(idx);
+                if (newcurr.Left != null && newcurr.Right != null)
+                    newcurr.Element = Merge(newcurr.Left.Element, newcurr.Right.Element);
+                else if (newcurr.Left != null)
+                    newcurr.Element = newcurr.Left.Element;
+                else if (newcurr.Right != null)
+                    newcurr.Element = newcurr.Right.Element;
 
-            while (curr != null)
-            {
-                curr.Element = ApplyDiff(curr.Element, diff);
-                curr = curr.Parent;
+                newcurr = newcurr.Parent;
             }
+
+            return CreateNew(newroot, Size);
         }
 
         public TElement Range(int stIncl, int edExcl)
@@ -113,9 +114,9 @@ namespace ProblemSolving.Templates.SegmentTree
             return Merge(Range(node.Left, stIncl, edExcl), Range(node.Right, stIncl, edExcl));
         }
 
+        protected abstract TSelf CreateNew(Node root, long size);
         protected abstract TElement Identity();
-        protected abstract TDiff CreateDiff(TElement element, TUpdate val);
-        protected abstract TElement ApplyDiff(TElement element, TDiff diff);
+        protected abstract TElement UpdateElement(TElement elem, TUpdate update);
         protected abstract TElement Merge(TElement l, TElement r);
     }
 }
