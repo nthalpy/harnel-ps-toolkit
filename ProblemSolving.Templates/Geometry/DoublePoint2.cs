@@ -14,6 +14,6 @@ namespace ProblemSolving.Templates.Geometry
         }
 
         public static DoubleVector2 operator -(DoublePoint2 to, DoublePoint2 from) => new DoubleVector2(to.X - from.X, to.Y - from.Y);
-        public static DoublePoint2 operator +(DoublePoint2 p, DoubleVector2 v) => new DoublePoint2(p.X + v.DeltaX, p.Y + v.DeltaY);
+        public static DoublePoint2 operator +(DoublePoint2 p, DoubleVector2 v) => new DoublePoint2(p.X + v.X, p.Y + v.Y);
     }
 }
