@@ -8,35 +8,26 @@
     {
         protected class Node
         {
-            public long StIncl;
-            public long EdExcl;
             public Node? Parent;
             public Node? Left;
             public Node? Right;
-
             public TElement Element;
 
-            public Node(long stIncl, long edExcl, TElement id)
+            public Node(TElement id)
             {
-                StIncl = stIncl;
-                EdExcl = edExcl;
                 Element = id;
             }
 
             public void MakeLeftNode(TElement id)
             {
-                var mid = (StIncl + EdExcl) / 2;
-                Left = new Node(StIncl, mid, id);
+                Left = new Node(id);
                 Left.Parent = this;
             }
             public void MakeRightNode(TElement id)
             {
-                var mid = (StIncl + EdExcl) / 2;
-                Right = new Node(mid, EdExcl, id);
+                Right = new Node(id);
                 Right.Parent = this;
             }
-
-            public override string ToString() => $"Range [{StIncl}, {EdExcl}): {Element}";
         }
 
         protected Node? _root;
@@ -55,19 +46,22 @@
         public TSelf UpdateValue(int idx, TUpdate update)
         {
             var id = Identity();
-            var newroot = new Node(0, Size, id);
+            var newroot = new Node(id);
 
             var curr = _root;
+            var newcurrStIncl = 0L;
+            var newcurrEdExcl = Size;
             var newcurr = newroot;
 
-            while (newcurr.StIncl != idx || newcurr.EdExcl != idx + 1)
+            while (newcurrEdExcl - newcurrStIncl > 1)
             {
-                var mid = (newcurr.StIncl + newcurr.EdExcl) / 2;
+                var mid = (newcurrStIncl + newcurrEdExcl) >> 1;
                 if (idx < mid)
                 {
                     if (newcurr.Left == null)
                         newcurr.MakeLeftNode(id);
 
+                    newcurrEdExcl = mid;
                     newcurr.Right = curr?.Right;
                     curr = curr?.Left;
                     newcurr = newcurr.Left!;
@@ -77,6 +71,7 @@
                     if (newcurr.Right == null)
                         newcurr.MakeRightNode(id);
 
+                    newcurrStIncl = mid;
                     newcurr.Left = curr?.Left;
                     curr = curr?.Right;
                     newcurr = newcurr.Right!;
@@ -99,19 +94,26 @@
             return CreateNew(newroot, Size);
         }
 
-        public TElement Range(int stIncl, int edExcl)
+        public TElement Range(long stIncl, long edExcl)
         {
-            return Range(_root, stIncl, edExcl);
+            return Range(_root, 0, Size, stIncl, edExcl);
         }
-        protected TElement Range(Node? node, int stIncl, int edExcl)
+        protected TElement Range(
+            Node? node,
+            long nodeStIncl, long nodeEdExcl,
+            long stIncl, long edExcl)
         {
-            if (node == null || node.EdExcl <= stIncl || edExcl <= node.StIncl)
+            if (node == null || nodeEdExcl <= stIncl || edExcl <= nodeStIncl)
                 return Identity();
 
-            if (stIncl <= node.StIncl && node.EdExcl <= edExcl)
+            if (stIncl <= nodeStIncl && nodeEdExcl <= edExcl)
                 return node.Element;
 
-            return Merge(Range(node.Left, stIncl, edExcl), Range(node.Right, stIncl, edExcl));
+            var nodeMid = (nodeStIncl + nodeEdExcl) >> 1;
+
+            return Merge(
+                Range(node.Left, nodeStIncl, nodeMid, stIncl, edExcl),
+                Range(node.Right, nodeMid, nodeEdExcl, stIncl, edExcl));
         }
 
         protected abstract TSelf CreateNew(Node root, long size);
