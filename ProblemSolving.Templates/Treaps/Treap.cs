@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ProblemSolving.Templates.Treap
+namespace ProblemSolving.Templates.Treaps
 {
     /// <summary>
     /// Credits to https://cp-algorithms.com/data_structures/treap.html
@@ -26,7 +26,7 @@ namespace ProblemSolving.Templates.Treap
         }
 
         private Random _rd;
-        private TreapNode? _root;
+        protected TreapNode? _root;
 
         public Treap()
         {
@@ -96,7 +96,7 @@ namespace ProblemSolving.Templates.Treap
             if (t == null)
                 return;
 
-            var comp = t.Key.CompareTo(key);
+            var comp = key.CompareTo(t.Key);
             if (comp == 0)
             {
                 Merge(ref t, t.Left, t.Right);
