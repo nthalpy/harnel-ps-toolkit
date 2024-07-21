@@ -43,6 +43,12 @@ namespace ProblemSolving.Templates
         }
 
         public static implicit operator ModInt<TOp>(long val) => new ModInt<TOp>(val);
+        public static ModInt<TOp> operator ++(ModInt<TOp> l)
+        {
+            var mod = default(TOp).GetMod();
+            var v = l.V + 1;
+            return new ModInt<TOp>(v == mod ? 0 : v);
+        }
         public static ModInt<TOp> operator +(ModInt<TOp> l, ModInt<TOp> r)
         {
             var mod = default(TOp).GetMod();

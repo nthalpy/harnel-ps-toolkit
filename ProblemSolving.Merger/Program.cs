@@ -78,6 +78,8 @@ namespace ProblemSolving.Templates.Merger
                 foreach (var param in curr.Parameters)
                     EnqueueTypeDefs(param.ParameterType);
 
+                EnqueueTypeDefs(curr.ReturnType);
+
                 foreach (var inst in curr.Body.Instructions)
                 {
                     if (inst.Operand is MethodReference methodRef)
@@ -150,7 +152,7 @@ namespace ProblemSolving.Templates.Merger
             var sb = new StringBuilder();
             foreach (var u in usings)
                 sb.AppendLine($"using {u};");
-            foreach (var (a,u) in usingAlias)
+            foreach (var (a, u) in usingAlias)
                 sb.AppendLine($"using {a} = {u};");
 
             foreach (var u in usings)
@@ -171,6 +173,24 @@ namespace ProblemSolving.Templates.Merger
                     foreach (var typeDecl in comp.DescendantNodes().OfType<TypeDeclarationSyntax>())
                     {
                         foreach (var attrList in typeDecl.AttributeLists)
+                        {
+                            if (attrList.Attributes.Any(attr => attr.Name.ToFullString() == "IncludeIfReferenced"))
+                            {
+                                comp = comp.RemoveNode(attrList, SyntaxRemoveOptions.KeepNoTrivia);
+                                if (comp == null)
+                                    throw new InvalidOperationException();
+
+                                changed = true;
+                                break;
+                            }
+                        }
+
+                        if (changed)
+                            break;
+                    }
+                    foreach (var enumDecl in comp.DescendantNodes().OfType<EnumDeclarationSyntax>())
+                    {
+                        foreach (var attrList in enumDecl.AttributeLists)
                         {
                             if (attrList.Attributes.Any(attr => attr.Name.ToFullString() == "IncludeIfReferenced"))
                             {

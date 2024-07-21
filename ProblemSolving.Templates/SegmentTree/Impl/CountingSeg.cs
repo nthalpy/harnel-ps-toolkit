@@ -8,14 +8,13 @@
         }
 
         /// <summary>
-        /// k is 0-based
+        /// k is 1-based
         /// </summary>
         public int? KthElement(long k)
         {
-            if (Range(0, Size) < k)
+            if (k <= 0 || Range(0, Size) < k)
                 return null;
 
-            k++;
             var idx = 1;
             while (idx < _leafMask)
             {

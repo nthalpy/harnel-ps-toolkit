@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 namespace ProblemSolving.Templates
 {
     [AttributeUsage(
-        AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Interface,
+        AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Interface | AttributeTargets.Enum,
         AllowMultiple = false,
         Inherited = false)]
     internal sealed class IncludeIfReferenced : Attribute
