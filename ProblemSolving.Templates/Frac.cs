@@ -21,6 +21,8 @@ namespace ProblemSolving.Templates
         public static implicit operator Frac(long v) => new Frac(v, 1);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+        public static Frac operator -(Frac l) => new Frac(-l.P, l.Q);
+        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static Frac operator +(Frac l, Frac r) => new Frac(l.P * r.Q + l.Q * r.P, l.Q * r.Q);
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static Frac operator -(Frac l, Frac r) => new Frac(l.P * r.Q - l.Q * r.P, l.Q * r.Q);
