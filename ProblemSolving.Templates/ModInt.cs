@@ -34,10 +34,9 @@ namespace ProblemSolving.Templates
         {
             var mod = default(TOp).GetMod();
 
+            v = v % mod;
             if (v < 0)
-                v = (-v + mod - 1) / mod * mod;
-            else if (v >= mod)
-                v = v % mod;
+                v += mod;
 
             V = v;
         }
