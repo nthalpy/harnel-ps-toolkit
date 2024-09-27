@@ -6,9 +6,9 @@ namespace ProblemSolving.Templates
     [IncludeIfReferenced]
     public static class SuffixArray
     {
-        public static (int[] sa, long[] lcp) GetSuffixArray(string s)
+        public static (int[] sa, long[] lcp) GetSuffixArray(IList<int> s)
         {
-            var n = s.Length;
+            var n = s.Count;
             var sa = new int[n];
             var group = new int[n];
             var buf = new int[n];

@@ -1,11 +1,14 @@
-﻿namespace ProblemSolving.Templates
+﻿using System.Collections.Generic;
+
+namespace ProblemSolving.Templates
 {
     [IncludeIfReferenced]
     public static class ZAlgorithm
     {
-        public static int[] Z(string s)
+        public static int[] Z<T>(IList<T> s)
+            where T : struct
         {
-            var n = s.Length;
+            var n = s.Count;
             var z = new int[n];
 
             z[0] = n;
@@ -14,7 +17,7 @@
 
             while (idx < n)
             {
-                while (idx + width < n && s[width] == s[idx + width])
+                while (idx + width < n && s[width].Equals(s[idx + width]))
                     width++;
 
                 z[idx] = width;
